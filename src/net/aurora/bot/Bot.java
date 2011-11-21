@@ -2,14 +2,11 @@ package net.aurora.bot;
 
 import net.aurora.game.Server;
 import net.aurora.graphics.Buffer;
-import net.aurora.graphics.filters.chains.DefaultChain;
 import net.aurora.loader.AppletLoader;
 import net.aurora.loader.AppletLoaderContext;
+import net.aurora.ui.AuroraUI;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 
 /**
@@ -23,7 +20,9 @@ public class Bot {
     private Buffer buffer;
 
     public Bot() {
+        AuroraUI.statusLabel.setText("Navigating runescape.com to find applet data...");
         AppletLoaderContext context = AppletLoaderContext.create(new net.aurora.game.Frame(Server.Language.ENGLISH).getServer());
+        AuroraUI.statusLabel.setText("Loading applet...");
         this.loader = new AppletLoader(context);
         this.loader.getApplet().setPreferredSize(new Dimension(762, 530));
 
@@ -32,6 +31,8 @@ public class Bot {
 
     public void init(Canvas source) {
         this.buffer = new Buffer();
+
+        AuroraUI.statusLabel.setText("All done!");
     }
 
     /**
