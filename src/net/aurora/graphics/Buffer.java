@@ -1,5 +1,9 @@
 package net.aurora.graphics;
 
+import net.aurora.bot.Bot;
+import net.aurora.input.listeners.MouseEventListener;
+
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 /**
@@ -11,6 +15,11 @@ public class Buffer {
     private BufferedImage output = new BufferedImage(762, 503, BufferedImage.TYPE_INT_ARGB);
     private BufferedImage input = new BufferedImage(762, 503, BufferedImage.TYPE_INT_RGB);
     private int width = 762, height = 503;
+    private Bot bot;
+
+    public Buffer(Bot bot) {
+        this.bot = bot;
+    }
 
     /**
      * Returns a copy of the game buffer
@@ -29,7 +38,13 @@ public class Buffer {
      * @return
      */
     public BufferedImage getBotBuffer() {
-        this.output.getGraphics().drawString("Canvas rendered using bot buffer", 10, 30);
+        Graphics2D g2D = (Graphics2D)this.output.getGraphics();
+        g2D.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR, 0.0f));
+        g2D.fillRect(0, 0, this.output.getWidth(), this.output.getHeight());
+        g2D.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OUT, 0.0f));
+        g2D.dispose();
+
+        this.bot.onRepaint(this.output.getGraphics());
         return this.output;
     }
 
@@ -53,6 +68,4 @@ public class Buffer {
     public void onRepaint(BufferedImage input) {
         this.input = input; // Draw the image on our input so we don't modify the actual gamebuffer.
     }
-
-    int update = 0;
 }

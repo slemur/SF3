@@ -26,8 +26,8 @@ public class ColorFilter extends Filter {
         ORI_COLMAP = new Color[image.getWidth()][image.getHeight()];
         ORI_DISTMAP = new int[image.getWidth()][image.getHeight()];
 
-        for (int x = 0; x < 500; x++) {
-            for (int y = 0; y < 350; y++) {
+        for (int x = 0; x < image.getWidth(); x++) {
+            for (int y = 0; y < image.getHeight(); y++) {
                 Color current = new Color(image.getRGB(x, y));
                 int lowestSum = Integer.MAX_VALUE;
                 Color lowestColor = null;

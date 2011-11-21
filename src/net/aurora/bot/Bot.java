@@ -1,7 +1,11 @@
 package net.aurora.bot;
 
+import net.aurora.api.Methods;
 import net.aurora.game.Server;
 import net.aurora.graphics.Buffer;
+import net.aurora.graphics.GraphicalObject;
+import net.aurora.graphics.QueryResult;
+import net.aurora.input.listeners.MouseEventListener;
 import net.aurora.loader.AppletLoader;
 import net.aurora.loader.AppletLoaderContext;
 import net.aurora.ui.AuroraUI;
@@ -16,6 +20,7 @@ import java.util.HashMap;
  */
 public class Bot {
     private final static HashMap<Integer, Bot> INSTANCE_MAP = new HashMap<Integer, Bot>();
+    private final MouseEventListener listener = new MouseEventListener();
     private AppletLoader loader;
     private Buffer buffer;
 
@@ -30,9 +35,20 @@ public class Bot {
     }
 
     public void init(Canvas source) {
-        this.buffer = new Buffer();
+        this.buffer = new Buffer(this);
 
+        source.addMouseMotionListener(listener);
         AuroraUI.statusLabel.setText("All done!");
+    }
+
+    /**
+     * Called whenver the game buffer is updated
+     * @param g
+     */
+    public void onRepaint(Graphics g) {
+        g.setColor(Color.WHITE);
+        g.drawLine(this.listener.getX() - 5, this.listener.getY() - 5, this.listener.getX() + 5, this.listener.getY() + 5);
+        g.drawLine(this.listener.getX() + 5, this.listener.getY() - 5, this.listener.getX() + -5, this.listener.getY() + 5);
     }
 
     /**
@@ -51,6 +67,15 @@ public class Bot {
      */
     public Buffer getBuffer() {
         return this.buffer;
+    }
+
+    /**
+     * Returns the canvas component of the applet
+     *
+     * @return
+     */
+    public Canvas getCanvas() {
+        return (Canvas) getLoader().getApplet().getComponentAt(1, 1);
     }
 
     /**
