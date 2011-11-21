@@ -24,20 +24,8 @@ public class Methods {
     private final HashMap<Integer, BufferedImage> characters = new HashMap<Integer, BufferedImage>();
     private final BlobDetector blobs = new BlobDetector();
     private final Mouse mouse = new Mouse(this);
-    ColorFilter filter = new ColorFilter(new GraphicalObject(0, 0, 5, new Color(212, 211, 210), new Color(255, 255, 255), new Color(13, 8, 1), new Color(2, 211, 210)));
 
     private Bot bot;
-
-    public Methods() {
-        for (File f : new File("C:\\rs\\OCR\\").listFiles()) {
-            try {
-                if (f.getName().equals("result.png")) continue;
-                characters.put(Integer.parseInt(f.getName().replace(".bmp", "")), filter.apply(ImageIO.read(f)));
-            } catch (IOException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            }
-        }
-    }
 
     /**
      * Finds an object on the screen and returns the results
