@@ -3,8 +3,6 @@ package net.aurora.bot;
 import net.aurora.api.Methods;
 import net.aurora.game.Server;
 import net.aurora.graphics.Buffer;
-import net.aurora.graphics.GraphicalObject;
-import net.aurora.graphics.QueryResult;
 import net.aurora.input.listeners.MouseEventListener;
 import net.aurora.loader.AppletLoader;
 import net.aurora.loader.AppletLoaderContext;
@@ -43,6 +41,7 @@ public class Bot {
 
     /**
      * Called whenver the game buffer is updated
+     *
      * @param g
      */
     public void onRepaint(Graphics g) {

@@ -10,48 +10,35 @@ import java.awt.image.BufferedImage;
  * @author Rick van Biljouw
  *         Date: 21-11-11
  *         Time: 0:21
- *         Will use input colors to set up a heatmap-sort of thing.
+ *         Changes all occurences of input colors to white and non-matching colors to black
  */
 public class ColorFilter extends Filter {
-    private GraphicalObject object;
-    public Color[][] ORI_COLMAP;
-    public int[][] ORI_DISTMAP;
+    private Color[] colors;
+    private int tolerance;
 
-    public ColorFilter(GraphicalObject object) {
-        this.object = object;
+    public ColorFilter(int tolerance, Color... colors) {
+        this.tolerance = tolerance;
+        this.colors = colors;
     }
 
     @Override
     public BufferedImage apply(BufferedImage image) {
-        ORI_COLMAP = new Color[image.getWidth()][image.getHeight()];
-        ORI_DISTMAP = new int[image.getWidth()][image.getHeight()];
-
         for (int x = 0; x < image.getWidth(); x++) {
             for (int y = 0; y < image.getHeight(); y++) {
                 Color current = new Color(image.getRGB(x, y));
-                int lowestSum = Integer.MAX_VALUE;
-                Color lowestColor = null;
-                for (Color color : this.object.getColors()) {
+                for (Color color : colors) {
                     int rDiff = Math.abs(current.getRed() - color.getRed());
                     int gDiff = Math.abs(current.getGreen() - color.getGreen());
                     int bDiff = Math.abs(current.getBlue() - color.getBlue());
                     int sum = (rDiff + gDiff + bDiff) / 3;
-                    if (sum < lowestSum) {
-                        lowestSum = sum;
-                        lowestColor = color;
+                    if(sum < tolerance) {
+                        image.setRGB(x, y, Color.WHITE.getRGB());
+                        break;
+                    } else {
+                        image.setRGB(x,y, Color.BLACK.getRGB());
                     }
                 }
 
-                if (255 - (int) (lowestSum * object.getSensitivity()) > 0) {
-                    Color nColor = new Color(255 - (int) (lowestSum * object.getSensitivity()), 255 - (int) (lowestSum * object.getSensitivity()), 255 - (int) (lowestSum * object.getSensitivity()));
-                    image.setRGB(x, y, nColor.getRGB());
-                } else {
-                    Color nColor = new Color(0, 0, 0);
-                    image.setRGB(x, y, nColor.getRGB());
-                }
-
-                ORI_COLMAP[x][y] = lowestColor;
-                ORI_DISTMAP[x][y] = lowestSum;
             }
         }
         return image;  //To change body of implemented methods use File | Settings | File Templates.
