@@ -1,52 +1,39 @@
 package net.aurora.graphics;
 
+import net.aurora.api.Methods;
+
 import java.awt.*;
 
 /**
  * @author Rick van Biljouw
  *         Date: 21-11-11
- *         Time: 1:27
+ *         Time: 1:36
  */
 public class GraphicalObject {
-    private Color[] colors;
-    private int threshold;
-    private int width = 20, height = 20;
-    private double sensitivity;
+    private GraphicalObjectDefinition objectDefinition;
+    private Rectangle bounds;
+    private Methods methods;
 
-    private int id;
-
-    public GraphicalObject(int id, int threshold, double sensitivity, Color... colors) {
-        this.id = id;
-        this.threshold = threshold;
-        this.sensitivity = sensitivity;
-        this.colors = colors;
+    public GraphicalObject(Methods methods, GraphicalObjectDefinition objectDefinition, Rectangle bounds) {
+        this.objectDefinition = objectDefinition;
+        this.bounds = bounds;
+        this.methods = methods;
     }
 
-    public int getId() {
-        return this.id;
+    /**
+     * Gets the definition of this object
+     * @return objectDefinition
+     */
+    public GraphicalObjectDefinition getObjectDefinition() {
+        return this.objectDefinition;
     }
 
-    public int getThreshold() {
-        return this.threshold;
+    /**
+     * Gets the bounds of this object
+     * @return bounds
+     */
+    public Rectangle getBounds() {
+        return this.bounds;
     }
 
-    public Color[] getColors() {
-        return this.colors;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public double getSensitivity() {
-        return sensitivity;
-    }
-
-    public void setSensitivity(double sensitivity) {
-        this.sensitivity = sensitivity;
-    }
 }

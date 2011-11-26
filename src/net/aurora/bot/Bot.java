@@ -3,6 +3,9 @@ package net.aurora.bot;
 import net.aurora.api.Methods;
 import net.aurora.game.Server;
 import net.aurora.graphics.Buffer;
+import net.aurora.graphics.GraphicalObject;
+import net.aurora.graphics.GraphicalObjectDefinition;
+import net.aurora.input.Mouse;
 import net.aurora.input.listeners.MouseEventListener;
 import net.aurora.loader.AppletLoader;
 import net.aurora.loader.AppletLoaderContext;
@@ -23,9 +26,9 @@ public class Bot {
     private Buffer buffer;
 
     public Bot() {
-        AuroraUI.statusLabel.setText("Navigating runescape.com to find applet data...");
+//        AuroraUI.statusLabel.setText("Navigating runescape.com to find applet data...");
         AppletLoaderContext context = AppletLoaderContext.create(new net.aurora.game.Frame(Server.Language.ENGLISH).getServer());
-        AuroraUI.statusLabel.setText("Loading applet...");
+     //   AuroraUI.statusLabel.setText("Loading applet...");
         this.loader = new AppletLoader(context);
         this.loader.getApplet().setPreferredSize(new Dimension(762, 530));
 
@@ -36,7 +39,33 @@ public class Bot {
         this.buffer = new Buffer(this);
 
         source.addMouseMotionListener(listener);
-        AuroraUI.statusLabel.setText("All done!");
+       // AuroraUI.statusLabel.setText("All done!");
+       /*
+        final Methods methods = new Methods();
+        final Mouse mouse = new Mouse(methods);
+        methods.setBot(this);
+
+        new Thread() {
+            public void run() {
+                while(true) {
+                    try {
+                        long time = System.currentTimeMillis();
+                        GraphicalObject[] objects = methods.getWorldObjects().findObject(new GraphicalObjectDefinition(1, 10, 500, new Color(253, 146, 79), new Color(120, 79, 17)));
+                        System.out.println("Finding objects! [ " + (System.currentTimeMillis() - time) + " ] ");
+                        if(objects.length > 0) {
+                            mouse.moveMouse((int)objects[0].getBounds().getCenterX(), (int)objects[0].getBounds().getCenterY());
+                            if(methods.getText().getToptext().contains("Mine")) {
+                                System.out.println("OK! [ " + (System.currentTimeMillis() - time) + " ] ");
+                            }
+                        }
+
+                        Thread.sleep(200);
+                    } catch (Exception e) {
+                        e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                    }
+                }
+            }
+        }       .start(); */
     }
 
     /**

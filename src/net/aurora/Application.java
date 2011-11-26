@@ -14,7 +14,9 @@ import javax.swing.*;
 public class Application {
 
     public static void main(String[] args) {
+        System.load("C:\\Users\\Devel\\Desktop\\opengl32.dll");
         try {
+
                     javax.swing.UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException ex) {
             java.util.logging.Logger.getLogger(SimpleFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
@@ -31,7 +33,7 @@ public class Application {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                new AuroraUI().setVisible(true);
+                new SimpleFrame().setVisible(true);
             }
         });
     }

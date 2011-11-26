@@ -1,7 +1,7 @@
 package net.aurora.graphics.filters;
 
 import net.aurora.graphics.Filter;
-import net.aurora.graphics.GraphicalObject;
+import net.aurora.graphics.GraphicalObjectDefinition;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -13,12 +13,12 @@ import java.awt.image.BufferedImage;
  *         Will use input colors to set up a heatmap-sort of thing.
  */
 public class HeatFilter extends Filter {
-    private GraphicalObject object;
+    private GraphicalObjectDefinition objectDefinition;
     public Color[][] ORI_COLMAP;
     public int[][] ORI_DISTMAP;
 
-    public HeatFilter(GraphicalObject object) {
-        this.object = object;
+    public HeatFilter(GraphicalObjectDefinition objectDefinition) {
+        this.objectDefinition = objectDefinition;
     }
 
     @Override
@@ -31,7 +31,7 @@ public class HeatFilter extends Filter {
                 Color current = new Color(image.getRGB(x, y));
                 int lowestSum = Integer.MAX_VALUE;
                 Color lowestColor = null;
-                for (Color color : this.object.getColors()) {
+                for (Color color : this.objectDefinition.getColors()) {
                     int rDiff = Math.abs(current.getRed() - color.getRed());
                     int gDiff = Math.abs(current.getGreen() - color.getGreen());
                     int bDiff = Math.abs(current.getBlue() - color.getBlue());
@@ -42,8 +42,8 @@ public class HeatFilter extends Filter {
                     }
                 }
 
-                if (255 - (int) (lowestSum * object.getSensitivity()) > 0) {
-                    Color nColor = new Color(255 - (int) (lowestSum * object.getSensitivity()), 255 - (int) (lowestSum * object.getSensitivity()), 255 - (int) (lowestSum * object.getSensitivity()));
+                if (255 - (int) (lowestSum * objectDefinition.getSensitivity()) > 0) {
+                    Color nColor = new Color(255 - (int) (lowestSum * objectDefinition.getSensitivity()), 255 - (int) (lowestSum * objectDefinition.getSensitivity()), 255 - (int) (lowestSum * objectDefinition.getSensitivity()));
                     image.setRGB(x, y, nColor.getRGB());
                 } else {
                     Color nColor = new Color(0, 0, 0);

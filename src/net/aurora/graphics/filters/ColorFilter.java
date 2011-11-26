@@ -1,7 +1,6 @@
 package net.aurora.graphics.filters;
 
 import net.aurora.graphics.Filter;
-import net.aurora.graphics.GraphicalObject;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

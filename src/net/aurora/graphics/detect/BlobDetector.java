@@ -1,6 +1,6 @@
 package net.aurora.graphics.detect;
 
-import net.aurora.graphics.GraphicalObject;
+import net.aurora.graphics.GraphicalObjectDefinition;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -17,18 +17,19 @@ import java.util.Set;
  *         Fetches all blobs on screen
  */
 public class BlobDetector {
-    public ArrayList<Rectangle> getResults(GraphicalObject object, BufferedImage image, Color[][] ORI_COLMAP) {
+
+    public static ArrayList<Rectangle> getResults(GraphicalObjectDefinition objectDefinition, BufferedImage image, Color[][] ORI_COLMAP) {
         ArrayList<Rectangle> extracts = new ArrayList<Rectangle>();
         for (int x = 0; x < image.getWidth(); x++) {
             for (int y = 0; y < image.getHeight(); y++) {
                 Color c = new Color(image.getRGB(x, y));
-                if (c.getRed() > 240 && c.getGreen() > 240 && c.getBlue() > 240) {
+                if (c.getRed() > 250 && c.getGreen() > 250 && c.getBlue() > 250) {
                     ArrayList<Color> colors = new ArrayList<Color>();
-                    Rectangle bounds = new Rectangle(x, y, object.getWidth(), object.getHeight());
+                    Rectangle bounds = new Rectangle(x, y, objectDefinition.getWidth(), objectDefinition.getHeight());
                     int concentration = 0;
 
-                    for (int subX = x; subX < (x + object.getWidth()); subX++) {
-                        for (int subY = y; subY < (y + object.getHeight()); subY++) {
+                    for (int subX = x; subX < (x + objectDefinition.getWidth()); subX++) {
+                        for (int subY = y; subY < (y + objectDefinition.getHeight()); subY++) {
                             if (subX < image.getWidth() && subY < image.getHeight()) {
                                 Color color = new Color(image.getRGB(subX, subY));
                                 if (color.getRed() > 240 && color.getGreen() > 240 && color.getBlue() > 240) {
@@ -41,7 +42,7 @@ public class BlobDetector {
                         }
                     }
 
-                    if (concentration > object.getThreshold() && colors.size() >= object.getColors().length) {
+                    if (concentration > objectDefinition.getThreshold() && colors.size() >= objectDefinition.getColors().length) {
                         extracts.add(bounds);
                     }
                 }
@@ -82,7 +83,7 @@ public class BlobDetector {
         return result;
     }
 
-    private Set<Rectangle> getIntersections(List<Rectangle> list,
+    private static Set<Rectangle> getIntersections(List<Rectangle> list,
                                             Rectangle r) {
         Set<Rectangle> intersections = new HashSet<Rectangle>();
         intersections.add(r);
@@ -103,7 +104,7 @@ public class BlobDetector {
         return intersections;
     }
 
-    private List<Set<Rectangle>> mergeIntersectingRects(List<Rectangle> allRects) {
+    private static List<Set<Rectangle>> mergeIntersectingRects(List<Rectangle> allRects) {
         List<Set<Rectangle>> grouped = new ArrayList<Set<Rectangle>>();
         while (!allRects.isEmpty()) {
             Set<Rectangle> intersections = getIntersections(allRects, allRects.get(0));
@@ -111,7 +112,6 @@ public class BlobDetector {
             allRects.removeAll(intersections);
         }
         return grouped;
-
-
     }
+
 }

@@ -1,20 +1,8 @@
 package net.aurora.api;
 
 import net.aurora.bot.Bot;
-import net.aurora.graphics.GraphicalObject;
-import net.aurora.graphics.QueryResult;
-import net.aurora.graphics.detect.BlobDetector;
-import net.aurora.graphics.filters.ColorFilter;
-import net.aurora.graphics.filters.HeatFilter;
-import net.aurora.input.Mouse;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * @author Rick van Biljouw
@@ -22,33 +10,19 @@ import java.util.HashMap;
  *         Time: 1:32
  */
 public class Methods {
-    private final ColorFilter OCR_filter = new ColorFilter(20, new Color(212, 211, 210), new Color(255, 255, 255), new Color(2, 211, 210));
-    private final BlobDetector blobs = new BlobDetector();
-    private final Mouse mouse = new Mouse(this);
-
+    private final WorldObjects worldObjects = new WorldObjects(this);
+    private final Text text = new Text(this);
     private Bot bot;
 
-    public Methods() {
-    }
-
-    public String getToptext() {
-        String toptext = "";
-        final BufferedImage search = OCR_filter.apply(this.bot.getBuffer().getGameBuffer().getSubimage(4, 4, 250, 40));
-        //TODO: Find chars
-        return toptext;
-    }
-
     /**
-     * Finds an object on the screen and returns the results
+     * Grab graphics to draw on
+     * NOTE: These graphics should be obtained and stored in a variable.
+     * Multiple calls to getGraphics will result in cleaning of the previously painted region.
      *
-     * @param object
-     * @return
+     * @return bufferGraphics
      */
-    public QueryResult findObject(GraphicalObject object) {
-        HeatFilter filter = new HeatFilter(object);
-        ArrayList<Rectangle> results = blobs.getResults(object, filter.apply(this.bot.getBuffer().getGameBuffer()), filter.ORI_COLMAP);
-
-        return new QueryResult(object, results.toArray(new Rectangle[results.size()]));
+    public Graphics getGraphics() {
+        return this.bot.getBuffer().getBotBuffer().getGraphics();
     }
 
     /**
@@ -69,7 +43,11 @@ public class Methods {
         return this.bot;
     }
 
-    public Mouse getMouse() {
-        return mouse;
+    public WorldObjects getWorldObjects() {
+        return worldObjects;
+    }
+
+    public Text getText() {
+        return text;
     }
 }
