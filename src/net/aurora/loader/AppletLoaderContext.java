@@ -1,6 +1,6 @@
 package net.aurora.loader;
 
-import net.aurora.game.Server;
+import net.aurora.loader.webobjects.Server;
 
 import java.applet.Applet;
 import java.applet.AppletContext;

@@ -1,10 +1,7 @@
-package net.aurora.game;
-
-import com.sun.org.apache.xerces.internal.impl.io.UCSReader;
+package net.aurora.loader.webobjects;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 /**

@@ -1,4 +1,4 @@
-package net.aurora.game;
+package net.aurora.loader.webobjects;
 
 import java.io.DataInputStream;
 import java.io.IOException;

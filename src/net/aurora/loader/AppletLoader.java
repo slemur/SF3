@@ -1,7 +1,5 @@
 package net.aurora.loader;
 
-import net.aurora.game.Server;
-
 import java.applet.Applet;
 import java.net.JarURLConnection;
 import java.net.URL;
