@@ -4,8 +4,6 @@
  */
 package java.awt;
 
-import net.aurora.bot.Bot;
-
 import javax.accessibility.Accessible;
 import javax.accessibility.AccessibleContext;
 import javax.accessibility.AccessibleRole;
@@ -39,14 +37,14 @@ public class Canvas extends Component implements Accessible {
     /**
      * CANVAS BUFFER
      */
-    public BufferedImage gameBuffer;
+    public BufferedImage gameBuffer = new BufferedImage(765, 508, BufferedImage.TYPE_INT_RGB);
     private BufferedImage convBuffer;
-    private Bot bot;
 
     /**
      * Constructs a new Canvas.
      */
     public Canvas() {
+        System.out.println("Hello hurr durr");
     }
 
     /**
@@ -225,27 +223,8 @@ public class Canvas extends Component implements Accessible {
 
     @Override
     public Graphics getGraphics() {
-        if (this.convBuffer == null || this.gameBuffer == null || (this.bot != null && this.bot.getBuffer() == null) || this.hasResized()) {
-            this.createBuffer();
-            if (this.bot != null) {
-                this.bot.init(this);
-            }
-        }
-
-        this.convBuffer.getGraphics().drawImage(this.gameBuffer, 0, 0, null);
-
-        if (bot != null) {
-            this.convBuffer.getGraphics().drawImage(this.bot.getBuffer().getBotBuffer(), 0, 0, null); // Transparent buffer from bot side.
-            this.bot.getBuffer().onRepaint(this.gameBuffer);
-        } else {
-            this.convBuffer.getGraphics().drawString("Notice: No matching bot instance was found!)", 10, 30);
-            this.convBuffer.getGraphics().drawString("Hash: " + getParent().hashCode(), 10, 50);
-            this.bot = Bot.getInstance(getParent().hashCode());
-        }
-
-        super.getGraphics().drawImage(this.convBuffer, 0, 0, this);
-
-        return this.gameBuffer.getGraphics();
+        super.getGraphics().drawImage(gameBuffer, 0, 0, null);
+        return gameBuffer.getGraphics();
     }
 
     /**
@@ -254,9 +233,6 @@ public class Canvas extends Component implements Accessible {
     private void createBuffer() {
         this.gameBuffer = new BufferedImage(getWidth() > 0 ? getWidth() : 762, getHeight() > 0 ? getHeight() : 503, BufferedImage.TYPE_INT_RGB);
         this.convBuffer = new BufferedImage(getWidth() > 0 ? getWidth() : 762, getHeight() > 0 ? getHeight() : 503, BufferedImage.TYPE_INT_RGB);
-        if(this.bot != null && this.bot.getBuffer() != null) {
-            this.bot.getBuffer().onDimensionChanged(getWidth(), getHeight());
-        }
     }
 
     /**

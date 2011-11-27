@@ -15,8 +15,7 @@ public class SimpleFrame extends javax.swing.JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Aurora Gameclient");
         setSize(768, 506);
-                        Bot bot = new Bot();
-                this.add(bot.getLoader().getApplet());
+        this.add(new Bot().getApplet());
         setVisible(true);
     }
 

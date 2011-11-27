@@ -1,73 +1,29 @@
 package net.aurora.bot;
 
-import net.aurora.loader.webobjects.Server;
-import net.aurora.input.listeners.MouseEventListener;
 import net.aurora.loader.AppletLoader;
 import net.aurora.loader.AppletLoaderContext;
+import net.aurora.loader.webobjects.Frame;
+import net.aurora.loader.webobjects.Server;
 
-import java.awt.*;
-import java.util.HashMap;
+import java.applet.Applet;
 
 /**
  * @author Rick van Biljouw
- *         Date: 20-11-11
- *         Time: 22:57
+ *         Date: 27-11-11
+ *         Time: 4:48
  */
 public class Bot {
-    private final static HashMap<Integer, Bot> INSTANCE_MAP = new HashMap<Integer, Bot>();
-    private final MouseEventListener listener = new MouseEventListener();
-    private AppletLoader loader;
+    private AppletLoaderContext context;
+    private Applet applet;
 
     public Bot() {
-//        AuroraUI.statusLabel.setText("Navigating runescape.com to find applet data...");
-        AppletLoaderContext context = AppletLoaderContext.create(new net.aurora.loader.webobjects.Frame(Server.Language.ENGLISH).getServer());
-        //   AuroraUI.statusLabel.setText("Loading applet...");
-        this.loader = new AppletLoader(context);
-        this.loader.getApplet().setPreferredSize(new Dimension(762, 530));
+        this.context = AppletLoaderContext.create(new Frame(Server.Language.ENGLISH).getServer());
 
-        INSTANCE_MAP.put(this.loader.getApplet().hashCode(), this);
+        AppletLoader loader = new AppletLoader(this.context);
+        this.applet = loader.getApplet();
     }
 
-    public void init(Canvas source) {
+    public Applet getApplet() {
+        return applet;
     }
-
-    /**
-     * Called whenver the game buffer is updated
-     *
-     * @param g
-     */
-    public void onRepaint(Graphics g) {
-        g.setColor(Color.WHITE);
-        g.drawLine(this.listener.getX() - 5, this.listener.getY() - 5, this.listener.getX() + 5, this.listener.getY() + 5);
-        g.drawLine(this.listener.getX() + 5, this.listener.getY() - 5, this.listener.getX() + -5, this.listener.getY() + 5);
-    }
-
-    /**
-     * Returns the applet loader for this bot
-     *
-     * @return loader
-     */
-    public AppletLoader getLoader() {
-        return this.loader;
-    }
-
-    /**
-     * Returns the canvas component of the applet
-     *
-     * @return
-     */
-    public Canvas getCanvas() {
-        return (Canvas) getLoader().getApplet().getComponentAt(1, 1);
-    }
-
-    /**
-     * Returns a bot instance related to the provided hash.
-     *
-     * @param hash
-     * @return bot
-     */
-    public static Bot getInstance(int hash) {
-        return INSTANCE_MAP.get(hash);
-    }
-
 }

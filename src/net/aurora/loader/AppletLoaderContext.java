@@ -149,7 +149,7 @@ public class AppletLoaderContext implements AppletStub, AppletContext, Enumerati
             for (String key : parameters.keySet()) {
                 ctx.putParameter(key, parameters.get(key));
             }
-
+            System.out.println(parameters.size());
             return ctx;
         } catch (MalformedURLException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
