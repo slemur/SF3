@@ -1,5 +1,7 @@
 package net.aurora.input;
 
+import net.aurora.bot.Bot;
+
 import java.awt.*;
 
 /**
@@ -8,17 +10,17 @@ import java.awt.*;
  *         Time: 0:05
  */
 public abstract class InputModule {
-    private BotLeaf bot;
+    private Bot bot;
 
     public Component getActiveComponent() {
-        return bot.getLoader().getApplet().getComponentAt(1,1);
+        return bot.getApplet().getComponentAt(1,1);
     }
 
-    public BotLeaf getBot() {
+    public Bot getBot() {
         return bot;
     }
 
-    public void setBot(BotLeaf bot) {
+    public void setBot(Bot bot) {
         this.bot = bot;
     }
 }
