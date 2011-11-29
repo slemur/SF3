@@ -3,6 +3,7 @@ package net.aurora;
 import net.aurora.ui.UI;
 
 import javax.swing.*;
+import java.io.File;
 
 /**
  * @author Rick van Biljouw
@@ -14,7 +15,7 @@ public class Application {
 
     public static void main(String[] args) {
         //Bootstrap our hacked opengl dll
-        System.load("opengl32.dll");
+        System.load(new File("opengl32.dll").getAbsolutePath());
 
         try {
             javax.swing.UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
