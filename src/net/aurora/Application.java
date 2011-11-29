@@ -1,6 +1,6 @@
 package net.aurora;
 
-import net.aurora.ui.SimpleFrame;
+import net.aurora.ui.UI;
 
 import javax.swing.*;
 
@@ -10,21 +10,28 @@ import javax.swing.*;
  *         Time: 0:16
  */
 public class Application {
+    private static UI ui;
 
     public static void main(String[] args) {
-        System.load("C:\\Users\\Devel\\Desktop\\opengl32.dll");
+        //Bootstrap our hacked opengl dll
+        System.load("opengl32.dll");
 
         try {
             javax.swing.UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            JPopupMenu.setDefaultLightWeightPopupEnabled(false);
+
             java.awt.EventQueue.invokeLater(new Runnable() {
 
                 public void run() {
-                    new SimpleFrame().setVisible(true);
+                    (ui = new UI()).setVisible(true);
                 }
             });
         } catch (Exception ex) {
-            java.util.logging.Logger.getLogger(SimpleFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
     }
 
+    public static UI getUI() {
+        return ui;
+    }
 }
