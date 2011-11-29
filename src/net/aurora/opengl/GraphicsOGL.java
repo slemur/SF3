@@ -1,6 +1,7 @@
 package net.aurora.opengl;
 
 import java.awt.*;
+import java.awt.image.*;
 
 /**
  * @author Rick van Biljouw
@@ -24,9 +25,11 @@ public class GraphicsOGL {
     public static native void setColor(Color color);
 
     /**
-     * Gets the pixels on the screen using OpenGL.
-     * @return pixels
+     * Gets color of specified pixel
+     * @param x
+     * @param y
+     * @return
      */
-    public static native int[][] getPixels();
+    public static native int[] getRGB();
 
 }

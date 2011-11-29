@@ -11,7 +11,12 @@ import net.aurora.opengl.GraphicsOGL;
 import net.aurora.opengl.NpcOGL;
 import net.aurora.util.Logger;
 
+import javax.imageio.ImageIO;
 import java.applet.Applet;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 
 /**
@@ -32,25 +37,27 @@ public class Bot {
 
         this.attachInput();
         final Bot bot = this;
+
+        // this is muddy as fuck and has to go asap lol
+
         new Thread("NPC Test") {
             public void run() {
-                while(Application.getUI() == null);
+                while (Application.getUI() == null) ;
                 Logger.log(bot, "Starting NPC test...");
-
-                while(true) {
-                    NpcOGL npc = NpcOGL.getNpcByChecksum(2013165131);
-                    if(npc != null) {
-                        Logger.log(bot, "Found goblin with checksum " + npc.getChecksum() + " at " + npc.getX() + ", " + npc.getY());
-                        Logger.log(bot, "Moved mouse to " + npc.getX() + ", " + npc.getY());
-                        ((Mouse)getInputDevice("Mouse")).move(npc.getX(), npc.getY());
-                    } else {
-
-                    }
-
-                    try {
-                        Thread.sleep(600);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                while (true) {
+                    if (applet.getComponentAt(0, 0) != null) {
+                        NpcOGL npc = NpcOGL.getNpcByChecksum(2013165131);
+                        if (npc != null) {
+                            Logger.log(bot, "Found goblin with checksum " + npc.getChecksum() + " at " + npc.getX() + ", " + npc.getY());
+                            Logger.log(bot, "Clicked on " + npc.getX() + ", " + npc.getY());
+                            ((Mouse)getInputDevice("Mouse")).move(npc.getX(), npc.getY());
+                            ((Mouse)getInputDevice("Mouse")).click(npc.getX(), npc.getY(), true);
+                        }
+                        try {
+                            Thread.sleep(10000);
+                        } catch (Exception e) {
+                            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                        }
                     }
                 }
             }
@@ -59,6 +66,7 @@ public class Bot {
 
     /**
      * Returns the game applet
+     *
      * @return
      */
     public Applet getApplet() {
@@ -67,6 +75,7 @@ public class Bot {
 
     /**
      * Gets an attached input device.
+     *
      * @param name the device name
      * @return
      */

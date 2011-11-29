@@ -9,11 +9,13 @@ public class NpcOGL {
     private int x;
     private int y;
     private int checksum;
+    private int inCombat;
 
-    public NpcOGL(int x, int y, int checksum) {
+    public NpcOGL(int x, int y, int checksum, int inCombat) {
         this.x = x;
         this.y = y;
         this.checksum = checksum;
+        this.inCombat = inCombat;
     }
 
     /**
@@ -49,7 +51,23 @@ public class NpcOGL {
     public static native NpcOGL getNpcByChecksum(int checksum);
 
     /**
+     * Returns the local player.
+     * @return
+     */
+    public static native NpcOGL getMyPlayer();
+
+    /**
+     * Set the checksum of the local player.
+     * @param checksum
+     */
+    public static native void setPlayerChecksum(int checksum);
+
+    /**
      * Toggle NPC debug (draws NPC checksum on the screen)
      */
     public static native void toggleNpcDebug();
+
+    public int getInCombat() {
+        return inCombat;
+    }
 }
