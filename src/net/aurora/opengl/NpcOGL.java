@@ -48,7 +48,7 @@ public class NpcOGL {
      * @param checksum
      * @return npc object
      */
-    public static native NpcOGL getNpcByChecksum(int checksum);
+    public static native NpcOGL getNpcByChecksum(int... checksum);
 
     /**
      * Returns the local player.
