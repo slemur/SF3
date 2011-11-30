@@ -11,7 +11,7 @@
 package net.aurora.ui;
 
 import net.aurora.bot.Bot;
-import net.aurora.opengl.NpcOGL;
+import net.aurora.opengl.Entity;
 
 import javax.swing.*;
 import java.applet.Applet;
@@ -146,7 +146,7 @@ public class UI extends javax.swing.JFrame {
     }// </editor-fold>
 
     private void viewNpcsItemActionPerformed(java.awt.event.ActionEvent evt) {
-        NpcOGL.toggleNpcDebug();
+        Entity.toggleNpcDebug();
     }
 
     public JList getDebugList() {

@@ -1,22 +1,13 @@
 package net.aurora.bot;
 
-import net.aurora.Application;
 import net.aurora.input.InputModule;
 import net.aurora.input.Mouse;
 import net.aurora.loader.AppletLoader;
 import net.aurora.loader.AppletLoaderContext;
 import net.aurora.loader.webobjects.Frame;
 import net.aurora.loader.webobjects.Server;
-import net.aurora.opengl.GraphicsOGL;
-import net.aurora.opengl.NpcOGL;
-import net.aurora.util.Logger;
 
-import javax.imageio.ImageIO;
 import java.applet.Applet;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 
 /**
@@ -36,32 +27,6 @@ public class Bot {
         this.applet = loader.getApplet();
 
         this.attachInput();
-        final Bot bot = this;
-
-        // this is muddy as fuck and has to go asap lol
-
-        new Thread("NPC Test") {
-            public void run() {
-                while (Application.getUI() == null) ;
-                Logger.log(bot, "Starting NPC test...");
-                while (true) {
-                    if (applet.getComponentAt(0, 0) != null) {
-                        NpcOGL npc = NpcOGL.getNpcByChecksum(2013165131);
-                        if (npc != null) {
-                            Logger.log(bot, "Found goblin with checksum " + npc.getChecksum() + " at " + npc.getX() + ", " + npc.getY());
-                            Logger.log(bot, "Clicked on " + npc.getX() + ", " + npc.getY());
-                            ((Mouse)getInputDevice("Mouse")).move(npc.getX(), npc.getY());
-                            ((Mouse)getInputDevice("Mouse")).click(npc.getX(), npc.getY(), true);
-                        }
-                        try {
-                            Thread.sleep(10000);
-                        } catch (Exception e) {
-                            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                        }
-                    }
-                }
-            }
-        }.start();
     }
 
     /**

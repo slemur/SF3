@@ -1,21 +1,21 @@
 package net.aurora.opengl;
 
+import net.aurora.util.ThreadUtils;
+
 /**
  * @author Rick van Biljouw
  *         Date: 26-11-11
  *         Time: 23:02
  */
-public class NpcOGL {
+public class Entity {
     private int x;
     private int y;
     private int checksum;
-    private int inCombat;
 
-    public NpcOGL(int x, int y, int checksum, int inCombat) {
+    public Entity(int x, int y, int checksum) {
         this.x = x;
         this.y = y;
         this.checksum = checksum;
-        this.inCombat = inCombat;
     }
 
     /**
@@ -48,13 +48,13 @@ public class NpcOGL {
      * @param checksum
      * @return npc object
      */
-    public static native NpcOGL getNpcByChecksum(int... checksum);
+    public static native Entity getEntityByChecksum(long... checksum);
 
     /**
      * Returns the local player.
      * @return
      */
-    public static native NpcOGL getMyPlayer();
+    public static native Entity getMyPlayer();
 
     /**
      * Set the checksum of the local player.
@@ -67,7 +67,16 @@ public class NpcOGL {
      */
     public static native void toggleNpcDebug();
 
-    public int getInCombat() {
-        return inCombat;
+    /**
+     * Await the existence of an entity
+     * @param checksum  the checksum of the entity
+     * @return entity once it pops up
+     */
+    public static Entity awaitExistence(int checksum) {
+        Entity entity;
+        while((entity = getEntityByChecksum(checksum)) == null) {
+            ThreadUtils.sleep(Thread.currentThread(), 100);
+        }
+        return entity;
     }
 }

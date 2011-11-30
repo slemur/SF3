@@ -8,7 +8,7 @@ import java.awt.image.*;
  *         Date: 26-11-11
  *         Time: 22:50
  */
-public class GraphicsOGL {
+public class Graphics {
 
     /**
      * Draws a string on the screen using OpenGL.
@@ -23,13 +23,5 @@ public class GraphicsOGL {
      * @param color
      */
     public static native void setColor(Color color);
-
-    /**
-     * Gets color of specified pixel
-     * @param x
-     * @param y
-     * @return
-     */
-    public static native int[] getRGB();
 
 }

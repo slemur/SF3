@@ -4,13 +4,14 @@ package net.aurora.opengl;
  * @author Rick van Biljouw
  *         Date: 26-11-11
  *         Time: 23:02
+ *         Objects with stride 12
  */
-public class ObjectOGL {
+public class Object {
     private int x;
     private int y;
     private int checksum;
 
-    public ObjectOGL(int x, int y, int checksum) {
+    public Object(int x, int y, int checksum) {
         this.x = x;
         this.y = y;
         this.checksum = checksum;
@@ -46,7 +47,7 @@ public class ObjectOGL {
      * @param checksum
      * @return npc object
      */
-    public static native NpcOGL getObjectByChecksum(int checksum);
+    public static native Entity getObjectByChecksum(int checksum);
 
     /**
      * Toggle object debug (draws object checksum on the screen)
