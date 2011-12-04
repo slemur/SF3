@@ -1,7 +1,5 @@
 package net.aurora.input.listeners;
 
-import net.aurora.opengl.Settings;
-
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
@@ -11,22 +9,40 @@ import java.awt.event.MouseMotionListener;
  *         Date: 3-12-11
  *         Time: 23:19
  */
-public class MouseMovement implements MouseMotionListener {
-    private static Component boundObject;
+public class MouseMovement implements ComponentListener, MouseMotionListener {
+    private Component boundObject;
+    private int x, y;
 
-    public static void attach(Component boundObjectN) {
-        if((boundObject == null || boundObject != boundObjectN) && boundObjectN != null) {
+    public void attach(Component boundObjectN) {
+        if ((boundObject == null || boundObject != boundObjectN) && boundObjectN != null) {
             boundObject = boundObjectN;
-            boundObject.addMouseMotionListener(new MouseMovement());
+            boundObject.addMouseMotionListener(this);
         }
     }
 
     public void mouseDragged(MouseEvent e) {
-        Settings.setMousePosition(e.getX(), e.getY());
+        x = e.getX();
+        y = e.getY();
     }
 
     public void mouseMoved(MouseEvent e) {
-        Settings.setMousePosition(e.getX(), e.getY());
+        x = e.getX();
+        y = e.getY();
     }
 
+    /**
+     * Get the X position of the mouse
+     * @return x coordinate
+     */
+    public int getX() {
+        return this.x;
+    }
+
+    /**
+     * Get the Y position of the mouse
+     * @return Y coordinate
+     */
+    public int getY() {
+        return this.y;
+    }
 }

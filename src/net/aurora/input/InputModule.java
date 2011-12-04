@@ -12,15 +12,15 @@ import java.awt.*;
 public abstract class InputModule {
     private Bot bot;
 
+    public InputModule(Bot bot) {
+        this.bot = bot;
+    }
+
     public Component getActiveComponent() {
         return bot.getApplet().getComponentAt(1,1);
     }
 
     public Bot getBot() {
         return bot;
-    }
-
-    public void setBot(Bot bot) {
-        this.bot = bot;
     }
 }

@@ -146,7 +146,7 @@ public class UI extends javax.swing.JFrame {
 
         setJMenuBar(menuBar);
 
-        Applet applet = new Bot().getApplet();
+        Applet applet = Bot.getSingleton().getApplet();
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
