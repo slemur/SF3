@@ -10,9 +10,9 @@ import net.aurora.util.ThreadUtils;
 public class Entity {
     private int x;
     private int y;
-    private int checksum;
+    private long checksum;
 
-    public Entity(int x, int y, int checksum) {
+    public Entity(int x, int y, long checksum) {
         this.x = x;
         this.y = y;
         this.checksum = checksum;
@@ -38,7 +38,7 @@ public class Entity {
      * Returns the checksum for the NPC (used for identifying)
      * @return
      */
-    public int getChecksum() {
+    public long getChecksum() {
         return this.checksum;
     }
 
@@ -48,7 +48,7 @@ public class Entity {
      * @param checksum
      * @return npc object
      */
-    public static native Entity getEntityByChecksum(long... checksum);
+    public static native Entity getEntityByChecksum(long checksum);
 
     /**
      * Returns the local player.
@@ -60,7 +60,7 @@ public class Entity {
      * Set the checksum of the local player.
      * @param checksum
      */
-    public static native void setPlayerChecksum(int checksum);
+    public static native void setPlayerChecksum(long checksum);
 
     /**
      * Toggle NPC debug (draws NPC checksum on the screen)
@@ -72,7 +72,7 @@ public class Entity {
      * @param checksum  the checksum of the entity
      * @return entity once it pops up
      */
-    public static Entity awaitExistence(int checksum) {
+    public static Entity awaitExistence(long checksum) {
         Entity entity;
         while((entity = getEntityByChecksum(checksum)) == null) {
             ThreadUtils.sleep(Thread.currentThread(), 100);

@@ -12,6 +12,7 @@ package net.aurora.ui;
 
 import net.aurora.bot.Bot;
 import net.aurora.opengl.Entity;
+import net.aurora.opengl.Interface;
 
 import javax.swing.*;
 import java.applet.Applet;
@@ -55,6 +56,8 @@ public class UI extends javax.swing.JFrame {
         breakhandlerItem = new javax.swing.JMenuItem();
         viewMenu = new javax.swing.JMenu();
         viewNpcsItem = new javax.swing.JCheckBoxMenuItem();
+        viewObjectsItem = new javax.swing.JCheckBoxMenuItem();
+        viewInterfacesItem = new javax.swing.JCheckBoxMenuItem();
         viewOtherItem = new javax.swing.JCheckBoxMenuItem();
         viewMenuSeperator = new javax.swing.JPopupMenu.Separator();
         viewLogsItem = new javax.swing.JMenuItem();
@@ -113,6 +116,24 @@ public class UI extends javax.swing.JFrame {
         });
         viewMenu.add(viewNpcsItem);
 
+        viewObjectsItem.setSelected(false);
+        viewObjectsItem.setText("View objects");
+        viewObjectsItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewObjectsItemActionPerformed(evt);
+            }
+        });
+        viewMenu.add(viewObjectsItem);
+
+        viewInterfacesItem.setSelected(false);
+        viewInterfacesItem.setText("View onterfaces");
+        viewInterfacesItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewInterfacesItemActionPerformed(evt);
+            }
+        });
+        viewMenu.add(viewInterfacesItem);
+
         viewOtherItem.setSelected(false);
         viewOtherItem.setText("View other");
         viewMenu.add(viewOtherItem);
@@ -149,6 +170,14 @@ public class UI extends javax.swing.JFrame {
         Entity.toggleNpcDebug();
     }
 
+    private void viewObjectsItemActionPerformed(java.awt.event.ActionEvent evt) {
+        net.aurora.opengl.Object.toggleObjectDebug();
+    }
+
+    private void viewInterfacesItemActionPerformed(java.awt.event.ActionEvent evt) {
+        Interface.toggleInterfaceDebug();
+    }
+
     public JList getDebugList() {
         return this.debugList;
     }
@@ -171,6 +200,8 @@ public class UI extends javax.swing.JFrame {
     private javax.swing.JMenu viewMenu;
     private javax.swing.JPopupMenu.Separator viewMenuSeperator;
     private javax.swing.JCheckBoxMenuItem viewNpcsItem;
+    private javax.swing.JCheckBoxMenuItem viewObjectsItem;
+    private javax.swing.JCheckBoxMenuItem viewInterfacesItem;
     private javax.swing.JCheckBoxMenuItem viewOtherItem;
     // End of variables declaration
 }
