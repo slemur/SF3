@@ -39,7 +39,7 @@ public class Canvas extends Component implements Accessible {
      * Constructs a new Canvas.
      */
     public Canvas() {
-        Bot.getSingleton().bind();
+        Bot.getSingleton().bind(this);
     }
 
     /**

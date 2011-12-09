@@ -9,6 +9,7 @@ import net.aurora.loader.webobjects.Frame;
 import net.aurora.loader.webobjects.Server;
 
 import java.applet.Applet;
+import java.awt.*;
 import java.util.HashMap;
 
 /**
@@ -52,14 +53,14 @@ public class Bot {
     /*
      * Bind event listeners
      */
-    public void bind() {
+    public void bind(Component component) {
         if (!listenerHashMap.containsKey("MouseAction")) { // Not yet initialized
             listenerHashMap.put("MouseAction", new MouseAction());
             listenerHashMap.put("MouseMovement", new MouseMovement());
         }
 
-        listenerHashMap.get("MouseAction").attach(applet.getComponentAt(1, 1));
-        listenerHashMap.get("MouseMovement").attach(applet.getComponentAt(1, 1));
+        listenerHashMap.get("MouseAction").attach(component);
+        listenerHashMap.get("MouseMovement").attach(component);
     }
 
     /**

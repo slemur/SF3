@@ -12,18 +12,17 @@ import java.awt.event.MouseListener;
  *         Time: 3:06
  */
 public class MouseAction implements ComponentListener, MouseListener {
-    private Component boundObject;
 
     public void attach(Component boundObjectN) {
-        if((boundObject == null || boundObject != boundObjectN) && boundObjectN != null) {
-            boundObject = boundObjectN;
-            boundObject.addMouseListener(this);
+        if(boundObjectN != null) {
+            boundObjectN.addMouseListener(this);
         }
     }
 
     public void mouseClicked(MouseEvent e) {
         if(e.getButton() == MouseEvent.BUTTON2) {
             Settings.setMousePosition(e.getX(), e.getY());
+            System.out.println("Updated OGL mouse position");
         }
     }
 

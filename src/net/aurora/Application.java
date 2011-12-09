@@ -26,6 +26,7 @@ public class Application {
                 public void run() {
                     (ui = new UI()).setVisible(true);
                 }
+
             });
         } catch (Exception ex) {
             ex.printStackTrace();

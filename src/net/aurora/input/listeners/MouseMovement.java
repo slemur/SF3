@@ -10,13 +10,11 @@ import java.awt.event.MouseMotionListener;
  *         Time: 23:19
  */
 public class MouseMovement implements ComponentListener, MouseMotionListener {
-    private Component boundObject;
     private int x, y;
 
     public void attach(Component boundObjectN) {
-        if ((boundObject == null || boundObject != boundObjectN) && boundObjectN != null) {
-            boundObject = boundObjectN;
-            boundObject.addMouseMotionListener(this);
+        if(boundObjectN != null) {
+            boundObjectN.addMouseMotionListener(this);
         }
     }
 
