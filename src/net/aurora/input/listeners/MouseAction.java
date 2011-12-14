@@ -1,7 +1,5 @@
 package net.aurora.input.listeners;
 
-import net.aurora.opengl.Settings;
-
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -21,8 +19,7 @@ public class MouseAction implements ComponentListener, MouseListener {
 
     public void mouseClicked(MouseEvent e) {
         if(e.getButton() == MouseEvent.BUTTON2) {
-            Settings.setMousePosition(e.getX(), e.getY());
-            System.out.println("Updated OGL mouse position");
+            //TODO: Update mouse position for opengl hover debugging.
         }
     }
 

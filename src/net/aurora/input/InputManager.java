@@ -67,8 +67,9 @@ public class InputManager {
      */
     public static InputManager create(Bot bot, boolean attachDefaults) {
         InputManager newManager = new InputManager(bot);
-        newManager.setMouse(new DefaultMouse(bot));
-        //newManager.setKeyboard(new DefaultKeyboard(bot));
+        if(attachDefaults) {
+            newManager.setMouse(new DefaultMouse(bot));
+        }
         return newManager;
     }
 

@@ -1,12 +1,14 @@
 package net.aurora.bot;
 
+import net.aurora.input.InputManager;
 import net.aurora.input.listeners.ComponentListener;
 import net.aurora.input.listeners.MouseAction;
 import net.aurora.input.listeners.MouseMovement;
 import net.aurora.loader.AppletLoader;
 import net.aurora.loader.AppletLoaderContext;
-import net.aurora.loader.webobjects.Frame;
-import net.aurora.loader.webobjects.Server;
+import net.aurora.loader.page.Frame;
+import net.aurora.loader.page.Server;
+import net.aurora.util.ThreadUtils;
 
 import java.applet.Applet;
 import java.awt.*;
@@ -20,6 +22,7 @@ import java.util.HashMap;
 public class Bot {
     private static Bot _singleton;
     private HashMap<String, ComponentListener> listenerHashMap = new HashMap<String, ComponentListener>();
+    private InputManager manager = InputManager.create(this, true);
 
     //Applet loader stuff
     private AppletLoader loader;
@@ -30,6 +33,14 @@ public class Bot {
         this.context = AppletLoaderContext.create(new Frame(Server.Language.ENGLISH).getServer());
         this.loader = new AppletLoader(this.context);
         this.applet = loader.getApplet();
+
+        new Thread() {
+            public void run() {
+                while(true) {
+                    ThreadUtils.sleep(this, 500);
+                }
+            }
+        }.start();
     }
 
     /**
@@ -66,7 +77,6 @@ public class Bot {
     /**
      * Ensures only one instance of Bot is active.
      */
-
     public static Bot getSingleton() {
         if (_singleton == null) _singleton = new Bot();
         return _singleton;

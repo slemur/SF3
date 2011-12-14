@@ -1,4 +1,4 @@
-package net.aurora.loader.webobjects;
+package net.aurora.loader.page;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

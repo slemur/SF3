@@ -11,8 +11,6 @@
 package net.aurora.ui;
 
 import net.aurora.bot.Bot;
-import net.aurora.opengl.Entity;
-import net.aurora.opengl.Interface;
 
 import javax.swing.*;
 import java.applet.Applet;
@@ -105,45 +103,6 @@ public class UI extends javax.swing.JFrame {
 
         menuBar.add(editMenu);
 
-        viewMenu.setText("View");
-
-        viewNpcsItem.setSelected(false);
-        viewNpcsItem.setText("View NPCs");
-        viewNpcsItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                viewNpcsItemActionPerformed(evt);
-            }
-        });
-        viewMenu.add(viewNpcsItem);
-
-        viewObjectsItem.setSelected(false);
-        viewObjectsItem.setText("View objects");
-        viewObjectsItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                viewObjectsItemActionPerformed(evt);
-            }
-        });
-        viewMenu.add(viewObjectsItem);
-
-        viewInterfacesItem.setSelected(false);
-        viewInterfacesItem.setText("View onterfaces");
-        viewInterfacesItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                viewInterfacesItemActionPerformed(evt);
-            }
-        });
-        viewMenu.add(viewInterfacesItem);
-
-        viewOtherItem.setSelected(false);
-        viewOtherItem.setText("View other");
-        viewMenu.add(viewOtherItem);
-        viewMenu.add(viewMenuSeperator);
-
-        viewLogsItem.setText("View logs");
-        viewMenu.add(viewLogsItem);
-
-        menuBar.add(viewMenu);
-
         setJMenuBar(menuBar);
 
         Applet applet = Bot.getSingleton().getApplet();
@@ -165,22 +124,6 @@ public class UI extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>
-
-    private void viewNpcsItemActionPerformed(java.awt.event.ActionEvent evt) {
-        Entity.toggleNpcDebug();
-    }
-
-    private void viewObjectsItemActionPerformed(java.awt.event.ActionEvent evt) {
-        net.aurora.opengl.Object.toggleObjectDebug();
-    }
-
-    private void viewInterfacesItemActionPerformed(java.awt.event.ActionEvent evt) {
-        Interface.toggleInterfaceDebug();
-    }
-
-    public JList getDebugList() {
-        return this.debugList;
-    }
 
     // Variables declaration - do not modify
     private javax.swing.JMenuItem accountsItem;
