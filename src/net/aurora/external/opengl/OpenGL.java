@@ -12,7 +12,6 @@ public class OpenGL {
 
     /**
      * Toggle a debug which draws through OpenGL itself.
-     *
      * @param debugId the ID of the debug (can be obtained from the constants declared in this class.
      */
     public static native void toggleDebug(int debugId);
