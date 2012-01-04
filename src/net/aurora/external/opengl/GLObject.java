@@ -7,21 +7,19 @@ package net.aurora.external.opengl;
  *         An object rendered by OpenGL
  */
 public class GLObject {
+    private byte[] pixels;
     private long checksum;
-    private int templateId;
     private int x;
     private int y;
 
     /**
      * Constructor of a GLObject
      * @param checksum
-     * @param templateId
      * @param x
      * @param y
      */
-    public GLObject(long checksum, int templateId, int x, int y) {
+    public GLObject(long checksum, int x, int y, byte[] pixels) {
         this.checksum = checksum;
-        this.templateId = templateId;
         this.x = x;
         this.y = y;
     }
@@ -32,14 +30,6 @@ public class GLObject {
      */
     public long getChecksum() {
         return this.checksum;
-    }
-
-    /**
-     * Return the ID of the template
-     * @return template id
-     */
-    public int getTemplateId() {
-        return this.templateId;
     }
 
     /**

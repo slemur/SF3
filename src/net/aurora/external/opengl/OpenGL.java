@@ -32,6 +32,7 @@ public class OpenGL {
      * Returns all the textures currently known in the OpenGL context.
      * @return textures
      */
+
     public static native GLObject[] getTextureCache();
 
 }

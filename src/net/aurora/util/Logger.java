@@ -16,9 +16,9 @@ public class Logger {
         if(logData.size() > 100) logData.clear();
 
         logData.add("[" + source.getClass().getSimpleName() + "] " + message);
-
+        /*
         if(Application.getUI() != null && Application.getUI().getDebugList() != null) {
             Application.getUI().getDebugList().setListData(logData.toArray(new String[logData.size()]));
-        }
+        } */
     }
 }

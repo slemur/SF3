@@ -1,5 +1,7 @@
 package net.aurora.bot;
 
+import net.aurora.external.opengl.GLObject;
+import net.aurora.external.opengl.OpenGL;
 import net.aurora.input.InputManager;
 import net.aurora.input.listeners.ComponentListener;
 import net.aurora.input.listeners.MouseAction;
@@ -36,8 +38,20 @@ public class Bot {
 
         new Thread() {
             public void run() {
-                while(true) {
-                    ThreadUtils.sleep(this, 500);
+                while (true) {
+                    ThreadUtils.sleep(this, 5000);
+
+                    try {
+                    GLObject[] models = OpenGL.getModelCache();
+                    System.out.println(models.length);
+                    for (GLObject object : models) {
+                        if (object != null) {
+                            System.out.println("OBJECT " + object.getX() + " " + object.getY());
+                        }
+                    }
+                    } catch(Exception E) {
+
+                    }
                 }
             }
         }.start();
@@ -54,6 +68,7 @@ public class Bot {
 
     /**
      * Returns a bound component listener
+     *
      * @param name name of the listeners
      * @return derp
      */

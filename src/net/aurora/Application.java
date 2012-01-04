@@ -14,6 +14,7 @@ public class Application {
     private static UI ui;
 
     public static void main(String[] args) {
+        System.load(new File("opengl32.dll").getAbsolutePath());
 
         try {
             javax.swing.UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
