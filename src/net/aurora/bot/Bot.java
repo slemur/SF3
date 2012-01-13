@@ -1,5 +1,6 @@
 package net.aurora.bot;
 
+import net.aurora.Application;
 import net.aurora.external.opengl.GLObject;
 import net.aurora.external.opengl.OpenGL;
 import net.aurora.input.InputManager;
@@ -10,7 +11,7 @@ import net.aurora.loader.AppletLoader;
 import net.aurora.loader.AppletLoaderContext;
 import net.aurora.loader.page.Frame;
 import net.aurora.loader.page.Server;
-import net.aurora.util.ThreadUtils;
+import net.aurora.sorcery.ClassContainer;
 
 import java.applet.Applet;
 import java.awt.*;
@@ -23,6 +24,8 @@ import java.util.HashMap;
  */
 public class Bot {
     private static Bot _singleton;
+    private ClassContainer rsClasses = new ClassContainer();
+
     private HashMap<String, ComponentListener> listenerHashMap = new HashMap<String, ComponentListener>();
     private InputManager manager = InputManager.create(this, true);
 
@@ -35,26 +38,6 @@ public class Bot {
         this.context = AppletLoaderContext.create(new Frame(Server.Language.ENGLISH).getServer());
         this.loader = new AppletLoader(this.context);
         this.applet = loader.getApplet();
-
-        new Thread() {
-            public void run() {
-                while (true) {
-                    ThreadUtils.sleep(this, 5000);
-
-                    try {
-                    GLObject[] models = OpenGL.getModelCache();
-                    System.out.println(models.length);
-                    for (GLObject object : models) {
-                        if (object != null) {
-                            System.out.println("OBJECT " + object.getX() + " " + object.getY());
-                        }
-                    }
-                    } catch(Exception E) {
-
-                    }
-                }
-            }
-        }.start();
     }
 
     /**
@@ -87,6 +70,11 @@ public class Bot {
 
         listenerHashMap.get("MouseAction").attach(component);
         listenerHashMap.get("MouseMovement").attach(component);
+    }
+
+
+    public ClassContainer getRsClasses() {
+        return rsClasses;
     }
 
     /**

@@ -1,5 +1,6 @@
 package net.aurora;
 
+import net.aurora.external.opengl.OpenGL;
 import net.aurora.ui.UI;
 
 import javax.swing.*;
@@ -11,11 +12,10 @@ import java.io.File;
  *         Time: 0:16
  */
 public class Application {
+    public static OpenGL glInstance;
     private static UI ui;
 
     public static void main(String[] args) {
-        System.load(new File("opengl32.dll").getAbsolutePath());
-
         try {
             javax.swing.UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
             JPopupMenu.setDefaultLightWeightPopupEnabled(false);
@@ -23,6 +23,7 @@ public class Application {
             java.awt.EventQueue.invokeLater(new Runnable() {
 
                 public void run() {
+                   // System.load(new File("C:\\Users\\Devel\\Desktop\\opengl32.dll").getAbsolutePath());
                     (ui = new UI()).setVisible(true);
                 }
 
