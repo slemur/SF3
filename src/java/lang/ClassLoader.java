@@ -700,8 +700,10 @@ public abstract class ClassLoader {
 
         postDefineClass(c, protectionDomain);
 
-        if (Bot.getSingleton().getApplet() != null)
+        if (Bot.getSingleton().getApplet() != null) {
+            Bot.getSingleton().getSorcery().setClassLoader(this);
             Bot.getSingleton().getSorcery().getClassContainer().defineClass(b);
+        }
         return c;
     }
 

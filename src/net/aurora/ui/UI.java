@@ -17,7 +17,7 @@ import java.applet.Applet;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import net.aurora.sorcery.Sorcery;
-import net.aurora.sorcery.ui.SorceryFrame;
+import net.aurora.sorcery.ui.SorceryUI;
 
 /**
  * @author Devel
@@ -106,7 +106,7 @@ public class UI extends javax.swing.JFrame {
         sorceryItem.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-                new SorceryFrame(Sorcery.getSorcery()).setVisible(true);
+                new SorceryUI(Sorcery.getSorcery()).setVisible(true);
             }
 
         });

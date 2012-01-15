@@ -16,6 +16,10 @@ import java.util.ArrayList;
 public class ClassContainer {
     private Project project = new Project("client");
 
+    /**
+     * Called by ClassLoader.class
+     * @param bytes the bytes of the class.
+     */
     public void defineClass(byte[] bytes) {
         project.loadClass(new ByteArrayInputStream(bytes));
     }

@@ -2699,6 +2699,9 @@ public class Code extends Attribute {
                 } else if (i instanceof LocalVariableInstruction) {
                     LocalVariableInstruction s = (LocalVariableInstruction)i;
                     text += "<font color=\"purple\"> " + ("[sptr: " + s.getLocal() + "]") + "</font>";
+                } else if(i instanceof MultiANewArrayInstruction) {
+                    MultiANewArrayInstruction s = (MultiANewArrayInstruction)i;
+                    text += "<font color=\"green\">" + ("[dims: " + s.getDimensions() + "]") + "</font>";
                 }
                 text += "<br>";
             }
