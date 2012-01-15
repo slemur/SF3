@@ -16,6 +16,8 @@ import javax.swing.*;
 import java.applet.Applet;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import net.aurora.sorcery.Sorcery;
+import net.aurora.sorcery.ui.SorceryFrame;
 
 /**
  * @author Devel
@@ -54,13 +56,6 @@ public class UI extends javax.swing.JFrame {
         accountsItem = new javax.swing.JMenuItem();
         randomsItem = new javax.swing.JMenuItem();
         breakhandlerItem = new javax.swing.JMenuItem();
-        viewMenu = new javax.swing.JMenu();
-        viewNpcsItem = new javax.swing.JCheckBoxMenuItem();
-        viewObjectsItem = new javax.swing.JCheckBoxMenuItem();
-        viewInterfacesItem = new javax.swing.JCheckBoxMenuItem();
-        viewOtherItem = new javax.swing.JCheckBoxMenuItem();
-        viewMenuSeperator = new javax.swing.JPopupMenu.Separator();
-        viewLogsItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -111,7 +106,7 @@ public class UI extends javax.swing.JFrame {
         sorceryItem.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-                new SorceryUI().setVisible(true);
+                new SorceryFrame(Sorcery.getSorcery()).setVisible(true);
             }
 
         });
@@ -158,12 +153,5 @@ public class UI extends javax.swing.JFrame {
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem oglSettingsItem;
     private javax.swing.JMenuItem randomsItem;
-    private javax.swing.JMenuItem viewLogsItem;
-    private javax.swing.JMenu viewMenu;
-    private javax.swing.JPopupMenu.Separator viewMenuSeperator;
-    private javax.swing.JCheckBoxMenuItem viewNpcsItem;
-    private javax.swing.JCheckBoxMenuItem viewObjectsItem;
-    private javax.swing.JCheckBoxMenuItem viewInterfacesItem;
-    private javax.swing.JCheckBoxMenuItem viewOtherItem;
     // End of variables declaration
 }

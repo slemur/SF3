@@ -10,6 +10,7 @@ import javax.accessibility.Accessible;
 import javax.accessibility.AccessibleContext;
 import javax.accessibility.AccessibleRole;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
 import java.awt.peer.CanvasPeer;
 
 /**
@@ -51,6 +52,16 @@ public class Canvas extends Component implements Accessible {
     public Canvas(GraphicsConfiguration config) {
         this();
         setGraphicsConfiguration(config);
+    }
+
+    BufferedImage backbuffer = new BufferedImage(762, 503, BufferedImage.TYPE_INT_RGB);
+
+    @Override
+    public Graphics getGraphics() {
+        backbuffer.getGraphics().drawString("HURR DURR", 10, 10);
+        super.getGraphics().drawImage(backbuffer, 0, 0, null);
+
+        return backbuffer.getGraphics();
     }
 
     @Override

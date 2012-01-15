@@ -30,6 +30,7 @@ import serp.bytecode.visitor.*;
  * @author Abe White
  */
 public class Code extends Attribute {
+
     private final CodeEntry _head;
     private final CodeEntry _tail;
     private CodeIterator _ci;
@@ -56,7 +57,7 @@ public class Code extends Attribute {
      */
     public Code() {
         this(0, new Project().loadClass("", null).declareMethod("", void.class,
-            null));
+                null));
     }
 
     /**
@@ -73,7 +74,6 @@ public class Code extends Attribute {
     ////////////////////////////
     // Stack, Locals operations
     ////////////////////////////
-
     /**
      * Return the maximum stack depth set for this code block.
      */
@@ -112,19 +112,23 @@ public class Code extends Attribute {
      * Returns -1 if the given index is not valid.
      */
     public int getLocalsIndex(int paramIndex) {
-        if (paramIndex < 0)
+        if (paramIndex < 0) {
             return -1;
+        }
 
         int pos = 0;
-        if (!getMethod().isStatic())
+        if (!getMethod().isStatic()) {
             pos = 1;
+        }
         String[] params = getMethod().getParamNames();
         for (int i = 0; i < paramIndex; i++, pos++) {
-            if (i == params.length)
+            if (i == params.length) {
                 return -1;
-            if (params[i].equals(long.class.getName()) 
-                || params[i].equals(double.class.getName()))
+            }
+            if (params[i].equals(long.class.getName())
+                    || params[i].equals(double.class.getName())) {
                 pos++;
+            }
         }
         return pos;
     }
@@ -137,15 +141,18 @@ public class Code extends Attribute {
      */
     public int getParamsIndex(int localIndex) {
         int pos = 0;
-        if (!getMethod().isStatic())
+        if (!getMethod().isStatic()) {
             pos = 1;
+        }
         String[] params = getMethod().getParamNames();
         for (int i = 0; i < params.length; i++, pos++) {
-            if (localIndex == pos)
+            if (localIndex == pos) {
                 return i;
-            if (params[i].equals(long.class.getName()) 
-                || params[i].equals(double.class.getName()))
+            }
+            if (params[i].equals(long.class.getName())
+                    || params[i].equals(double.class.getName())) {
                 pos++;
+            }
         }
         return -1;
     }
@@ -170,13 +177,14 @@ public class Code extends Attribute {
         // number for all the params
         String[] params = getMethod().getParamNames();
         int max = 0;
-        if ((params.length == 0) && !getMethod().isStatic())
+        if ((params.length == 0) && !getMethod().isStatic()) {
             max = 1;
-        else if (params.length > 0) {
+        } else if (params.length > 0) {
             max = getLocalsIndex(params.length - 1) + 1;
-            if (params[params.length - 1].equals(long.class.getName()) 
-                || params[params.length - 1].equals(double.class.getName()))
+            if (params[params.length - 1].equals(long.class.getName())
+                    || params[params.length - 1].equals(double.class.getName())) {
                 max++;
+            }
         }
 
         // check to see if there are any store instructions that
@@ -188,11 +196,13 @@ public class Code extends Attribute {
             if (entry instanceof StoreInstruction) {
                 store = (StoreInstruction) entry;
                 current = store.getLocal() + 1;
-                if (store.getType().equals(long.class) 
-                    || store.getType().equals(double.class))
+                if (store.getType().equals(long.class)
+                        || store.getType().equals(double.class)) {
                     current++;
-                if (current > max)
+                }
+                if (current > max) {
                     max = current;
+                }
             }
         }
         setMaxLocals(max);
@@ -215,11 +225,14 @@ public class Code extends Attribute {
 
             // if this is the start of a try, the exception will be placed
             // on the stack
-            for (int j = 0; j < handlers.length; j++)
-                if (handlers[j].getTryStart() == ins)
+            for (int j = 0; j < handlers.length; j++) {
+                if (handlers[j].getTryStart() == ins) {
                     stack++;
-            if (stack > max)
+                }
+            }
+            if (stack > max) {
                 max = stack;
+            }
         }
         setMaxStack(max);
     }
@@ -227,14 +240,12 @@ public class Code extends Attribute {
     ///////////////////////////////
     // ExceptionHandler operations
     ///////////////////////////////
-
     /**
      * Return the exception handlers active in this code block, or an
      * empty array if none.
      */
     public ExceptionHandler[] getExceptionHandlers() {
-        return (ExceptionHandler[]) _handlers.toArray
-            (new ExceptionHandler[_handlers.size()]);
+        return (ExceptionHandler[]) _handlers.toArray(new ExceptionHandler[_handlers.size()]);
     }
 
     /**
@@ -243,15 +254,16 @@ public class Code extends Attribute {
      * undefined.
      */
     public ExceptionHandler getExceptionHandler(String catchType) {
-        catchType = getProject().getNameCache().getExternalForm(catchType, 
-            false);
+        catchType = getProject().getNameCache().getExternalForm(catchType,
+                false);
         String type;
         ExceptionHandler[] handlers = getExceptionHandlers();
         for (int i = 0; i < handlers.length; i++) {
             type = handlers[i].getCatchName();
             if ((type == null && catchType == null)
-                || (type != null && type.equals(catchType)))
+                    || (type != null && type.equals(catchType))) {
                 return handlers[i];
+            }
         }
         return null;
     }
@@ -262,8 +274,9 @@ public class Code extends Attribute {
      * undefined.
      */
     public ExceptionHandler getExceptionHandler(Class catchType) {
-        if (catchType == null)
+        if (catchType == null) {
             return getExceptionHandler((String) null);
+        }
         return getExceptionHandler(catchType.getName());
     }
 
@@ -273,8 +286,9 @@ public class Code extends Attribute {
      * undefined.
      */
     public ExceptionHandler getExceptionHandler(BCClass catchType) {
-        if (catchType == null)
+        if (catchType == null) {
             return getExceptionHandler((String) null);
+        }
         return getExceptionHandler(catchType.getName());
     }
 
@@ -283,19 +297,19 @@ public class Code extends Attribute {
      * or an empty array if none.
      */
     public ExceptionHandler[] getExceptionHandlers(String catchType) {
-        catchType = getProject().getNameCache().getExternalForm(catchType, 
-            false);
+        catchType = getProject().getNameCache().getExternalForm(catchType,
+                false);
         List matches = new LinkedList();
         String type;
         ExceptionHandler[] handlers = getExceptionHandlers();
         for (int i = 0; i < handlers.length; i++) {
             type = handlers[i].getCatchName();
-            if ((type == null && catchType == null) 
-                || (type != null && type.equals(catchType)))
+            if ((type == null && catchType == null)
+                    || (type != null && type.equals(catchType))) {
                 matches.add(handlers[i]);
+            }
         }
-        return (ExceptionHandler[]) matches.toArray
-            (new ExceptionHandler[matches.size()]);
+        return (ExceptionHandler[]) matches.toArray(new ExceptionHandler[matches.size()]);
     }
 
     /**
@@ -303,8 +317,9 @@ public class Code extends Attribute {
      * or an empty array if none.
      */
     public ExceptionHandler[] getExceptionHandlers(Class catchType) {
-        if (catchType == null)
+        if (catchType == null) {
             return getExceptionHandlers((String) null);
+        }
         return getExceptionHandlers(catchType.getName());
     }
 
@@ -313,8 +328,9 @@ public class Code extends Attribute {
      * or an empty array if none.
      */
     public ExceptionHandler[] getExceptionHandlers(BCClass catchType) {
-        if (catchType == null)
+        if (catchType == null) {
             return getExceptionHandlers((String) null);
+        }
         return getExceptionHandlers(catchType.getName());
     }
 
@@ -325,9 +341,11 @@ public class Code extends Attribute {
      */
     public void setExceptionHandlers(ExceptionHandler[] handlers) {
         clearExceptionHandlers();
-        if (handlers != null)
-            for (int i = 0; i < handlers.length; i++)
+        if (handlers != null) {
+            for (int i = 0; i < handlers.length; i++) {
                 addExceptionHandler(handlers[i]);
+            }
+        }
     }
 
     /**
@@ -357,7 +375,7 @@ public class Code extends Attribute {
      * @param catchType the type of exception being caught
      */
     public ExceptionHandler addExceptionHandler(Instruction tryStart,
-        Instruction tryEnd, Instruction handlerStart, String catchType) {
+            Instruction tryEnd, Instruction handlerStart, String catchType) {
         ExceptionHandler handler = addExceptionHandler();
         handler.setTryStart(tryStart);
         handler.setTryEnd(tryEnd);
@@ -375,10 +393,11 @@ public class Code extends Attribute {
      * @param catchType the type of exception being caught
      */
     public ExceptionHandler addExceptionHandler(Instruction tryStart,
-        Instruction tryEnd, Instruction handlerStart, Class catchType) {
+            Instruction tryEnd, Instruction handlerStart, Class catchType) {
         String catchName = null;
-        if (catchType != null)
+        if (catchType != null) {
             catchName = catchType.getName();
+        }
         return addExceptionHandler(tryStart, tryEnd, handlerStart, catchName);
     }
 
@@ -391,10 +410,11 @@ public class Code extends Attribute {
      * @param catchType the type of exception being caught
      */
     public ExceptionHandler addExceptionHandler(Instruction tryStart,
-        Instruction tryEnd, Instruction handlerStart, BCClass catchType) {
+            Instruction tryEnd, Instruction handlerStart, BCClass catchType) {
         String catchName = null;
-        if (catchType != null)
+        if (catchType != null) {
             catchName = catchType.getName();
+        }
         return addExceptionHandler(tryStart, tryEnd, handlerStart, catchName);
     }
 
@@ -423,8 +443,9 @@ public class Code extends Attribute {
      * @return true if the handler was removed, false otherwise
      */
     public boolean removeExceptionHandler(Class catchType) {
-        if (catchType == null)
+        if (catchType == null) {
             return removeExceptionHandler((String) null);
+        }
         return removeExceptionHandler(catchType.getName());
     }
 
@@ -434,8 +455,9 @@ public class Code extends Attribute {
      * @return true if the handler was removed, false otherwise
      */
     public boolean removeExceptionHandler(BCClass catchType) {
-        if (catchType == null)
+        if (catchType == null) {
             return removeExceptionHandler((String) null);
+        }
         return removeExceptionHandler(catchType.getName());
     }
 
@@ -444,8 +466,9 @@ public class Code extends Attribute {
      * must belong to this code block.
      */
     public boolean removeExceptionHandler(ExceptionHandler handler) {
-        if ((handler == null) || !_handlers.remove(handler))
+        if ((handler == null) || !_handlers.remove(handler)) {
             return false;
+        }
         handler.invalidate();
         return true;
     }
@@ -453,7 +476,6 @@ public class Code extends Attribute {
     /////////////////////////
     // Code block operations
     /////////////////////////
-
     /**
      * Return the number of instructions in the method.
      */
@@ -472,10 +494,11 @@ public class Code extends Attribute {
      * Set the position of the instruction iterator to after the last opcode.
      */
     public void afterLast() {
-        if (_size == 0)
+        if (_size == 0) {
             _ci = new CodeIterator(_head, -1);
-        else
+        } else {
             _ci = new CodeIterator(_tail.prev, _size - 1);
+        }
     }
 
     /**
@@ -483,8 +506,9 @@ public class Code extends Attribute {
      * instruction must belong to this method.
      */
     public void before(Instruction ins) {
-        if (ins.getCode() != this)
+        if (ins.getCode() != this) {
             throw new IllegalArgumentException("ins.code != this");
+        }
         _ci = new CodeIterator(ins.prev, CodeIterator.UNSET);
     }
 
@@ -545,8 +569,9 @@ public class Code extends Attribute {
      * Place the iterator before the given list index.
      */
     public void before(int index) {
-        if (index < 0 || index >= _size)
+        if (index < 0 || index >= _size) {
             throw new IndexOutOfBoundsException(String.valueOf(index));
+        }
 
         CodeEntry entry = _head;
         for (int i = 0; i < index; entry = entry.next, i++);
@@ -574,12 +599,15 @@ public class Code extends Attribute {
      * @return true if match found
      */
     public boolean searchForward(Instruction template) {
-        if (template == null)
+        if (template == null) {
             return false;
+        }
 
-        while (hasNext())
-            if (template.equalsInstruction(next()))
+        while (hasNext()) {
+            if (template.equalsInstruction(next())) {
                 return true;
+            }
+        }
         return false;
     }
 
@@ -596,12 +624,15 @@ public class Code extends Attribute {
      * @return true if match found
      */
     public boolean searchBackward(Instruction template) {
-        if (template == null)
+        if (template == null) {
             return false;
+        }
 
-        while (hasPrevious())
-            if (template.equalsInstruction(previous()))
+        while (hasPrevious()) {
+            if (template.equalsInstruction(previous())) {
                 return true;
+            }
+        }
         return false;
     }
 
@@ -642,8 +673,9 @@ public class Code extends Attribute {
     public int replace(Instruction template, Instruction with) {
         beforeFirst();
         int count;
-        for (count = 0; searchForward(template); count++)
+        for (count = 0; searchForward(template); count++) {
             set(with);
+        }
         return count;
     }
 
@@ -652,15 +684,17 @@ public class Code extends Attribute {
      * pair and calling {@link #replace(Instruction,Instruction)} for each.
      */
     public int replace(Instruction[] templates, Instruction[] with) {
-        if (templates == null || with == null)
+        if (templates == null || with == null) {
             return 0;
+        }
 
         int count = 0;
         for (int i = 0; i < templates.length; i++) {
-            if (with == null)
+            if (with == null) {
                 count += replace(templates[i], null);
-            else
+            } else {
                 count += replace(templates[i], with[i]);
+            }
         }
         return count;
     }
@@ -677,7 +711,6 @@ public class Code extends Attribute {
     //////////////////////////
     // Instruction operations
     //////////////////////////
-
     /**
      * Load a class constant onto the stack.
      * For primitive types, this translates into a
@@ -689,7 +722,7 @@ public class Code extends Attribute {
      */
     public ClassConstantInstruction classconstant() {
         return new ClassConstantInstruction(getMethod().getDeclarer(), this,
-            nop());
+                nop());
     }
 
     /**
@@ -707,8 +740,7 @@ public class Code extends Attribute {
      * <code>lconst0</code>.
      */
     public ConstantInstruction constant() {
-        return (ConstantInstruction) addInstruction(new ConstantInstruction
-            (this));
+        return (ConstantInstruction) addInstruction(new ConstantInstruction(this));
     }
 
     /**
@@ -724,8 +756,7 @@ public class Code extends Attribute {
      * result in a <code>nop</code> until its local index is set.
      */
     public LoadInstruction iload() {
-        return (LoadInstruction) addInstruction(new LoadInstruction(this).
-            setType(int.class));
+        return (LoadInstruction) addInstruction(new LoadInstruction(this).setType(int.class));
     }
 
     /**
@@ -733,8 +764,7 @@ public class Code extends Attribute {
      * result in a <code>nop</code> until its local index is set.
      */
     public LoadInstruction lload() {
-        return (LoadInstruction) addInstruction(new LoadInstruction(this).
-            setType(long.class));
+        return (LoadInstruction) addInstruction(new LoadInstruction(this).setType(long.class));
     }
 
     /**
@@ -742,8 +772,7 @@ public class Code extends Attribute {
      * result in a <code>nop</code> until its local index is set.
      */
     public LoadInstruction fload() {
-        return (LoadInstruction) addInstruction(new LoadInstruction(this).
-            setType(float.class));
+        return (LoadInstruction) addInstruction(new LoadInstruction(this).setType(float.class));
     }
 
     /**
@@ -751,8 +780,7 @@ public class Code extends Attribute {
      * result in a <code>nop</code> until its local index is set.
      */
     public LoadInstruction dload() {
-        return (LoadInstruction) addInstruction(new LoadInstruction(this).
-            setType(double.class));
+        return (LoadInstruction) addInstruction(new LoadInstruction(this).setType(double.class));
     }
 
     /**
@@ -760,8 +788,7 @@ public class Code extends Attribute {
      * result in a <code>nop</code> until its local index is set.
      */
     public LoadInstruction aload() {
-        return (LoadInstruction) addInstruction(new LoadInstruction(this).
-            setType(Object.class));
+        return (LoadInstruction) addInstruction(new LoadInstruction(this).setType(Object.class));
     }
 
     /**
@@ -778,8 +805,7 @@ public class Code extends Attribute {
      * set.
      */
     public StoreInstruction istore() {
-        return (StoreInstruction) addInstruction(new StoreInstruction(this).
-            setType(int.class));
+        return (StoreInstruction) addInstruction(new StoreInstruction(this).setType(int.class));
     }
 
     /**
@@ -788,8 +814,7 @@ public class Code extends Attribute {
      * set.
      */
     public StoreInstruction lstore() {
-        return (StoreInstruction) addInstruction(new StoreInstruction(this).
-            setType(long.class));
+        return (StoreInstruction) addInstruction(new StoreInstruction(this).setType(long.class));
     }
 
     /**
@@ -798,8 +823,7 @@ public class Code extends Attribute {
      * set.
      */
     public StoreInstruction fstore() {
-        return (StoreInstruction) addInstruction(new StoreInstruction(this).
-            setType(float.class));
+        return (StoreInstruction) addInstruction(new StoreInstruction(this).setType(float.class));
     }
 
     /**
@@ -808,8 +832,7 @@ public class Code extends Attribute {
      * set.
      */
     public StoreInstruction dstore() {
-        return (StoreInstruction) addInstruction(new StoreInstruction(this).
-            setType(double.class));
+        return (StoreInstruction) addInstruction(new StoreInstruction(this).setType(double.class));
     }
 
     /**
@@ -818,8 +841,7 @@ public class Code extends Attribute {
      * set.
      */
     public StoreInstruction astore() {
-        return (StoreInstruction) addInstruction(new StoreInstruction(this).
-            setType(Object.class));
+        return (StoreInstruction) addInstruction(new StoreInstruction(this).setType(Object.class));
     }
 
     /**
@@ -850,7 +872,7 @@ public class Code extends Attribute {
      */
     public ArrayLoadInstruction xaload() {
         return (ArrayLoadInstruction) addInstruction(new ArrayLoadInstruction(
-            this));
+                this));
     }
 
     /**
@@ -916,7 +938,7 @@ public class Code extends Attribute {
      */
     public ArrayStoreInstruction xastore() {
         return (ArrayStoreInstruction) addInstruction(new ArrayStoreInstruction(
-            this));
+                this));
     }
 
     /**
@@ -1431,7 +1453,7 @@ public class Code extends Attribute {
      * between are set.
      */
     public ConvertInstruction convert() {
-        return (ConvertInstruction)addInstruction(new ConvertInstruction(this));
+        return (ConvertInstruction) addInstruction(new ConvertInstruction(this));
     }
 
     /**
@@ -1764,8 +1786,7 @@ public class Code extends Attribute {
      * opcode.
      */
     public MultiANewArrayInstruction multianewarray() {
-        return (MultiANewArrayInstruction) addInstruction
-            (Constants.MULTIANEWARRAY);
+        return (MultiANewArrayInstruction) addInstruction(Constants.MULTIANEWARRAY);
     }
 
     /**
@@ -1807,15 +1828,15 @@ public class Code extends Attribute {
     /////////////////////////
     // Wholisitic operations
     /////////////////////////
-
     /**
      * Return all the Instructions of this method.
      */
     public Instruction[] getInstructions() {
         Instruction[] arr = new Instruction[_size];
         int i = 0;
-        for (CodeEntry entry = _head.next; entry != _tail; entry = entry.next)
+        for (CodeEntry entry = _head.next; entry != _tail; entry = entry.next) {
             arr[i++] = (Instruction) entry;
+        }
         return arr;
     }
 
@@ -1826,16 +1847,18 @@ public class Code extends Attribute {
 
         // add code
         Instruction last = getLastInstruction();
-        if (last != null)
+        if (last != null) {
             length += last.getByteIndex() + last.getLength();
+        }
 
         // add exception reps; each is 8 bytes
         length += (8 * _handlers.size());
 
         // add all attribute lengths
         Attribute[] attrs = getAttributes();
-        for (int i = 0; i < attrs.length; i++)
+        for (int i = 0; i < attrs.length; i++) {
             length += (attrs[i].getLength() + 6);
+        }
         return length;
     }
 
@@ -1848,8 +1871,9 @@ public class Code extends Attribute {
             ins.acceptVisit(visit);
             visit.exitInstruction(ins);
         }
-        for (Iterator i = _handlers.iterator(); i.hasNext();)
+        for (Iterator i = _handlers.iterator(); i.hasNext();) {
             ((ExceptionHandler) i.next()).acceptVisit(visit);
+        }
         visitAttributes(visit);
         visit.exitCode(this);
     }
@@ -1857,7 +1881,6 @@ public class Code extends Attribute {
     //////////////////////////
     // Convenience operations
     //////////////////////////
-
     /**
      * Return line number information for the code.
      * Acts internally through the {@link Attributes} interface.
@@ -1868,11 +1891,11 @@ public class Code extends Attribute {
      * and the <code>add</code> param is set to false
      */
     public LineNumberTable getLineNumberTable(boolean add) {
-        LineNumberTable attr = (LineNumberTable) getAttribute
-            (Constants.ATTR_LINENUMBERS);
+        LineNumberTable attr = (LineNumberTable) getAttribute(Constants.ATTR_LINENUMBERS);
 
-        if (!add || (attr != null))
+        if (!add || (attr != null)) {
             return attr;
+        }
         return (LineNumberTable) addAttribute(Constants.ATTR_LINENUMBERS);
     }
 
@@ -1896,10 +1919,10 @@ public class Code extends Attribute {
      * and the <code>add</code> param is set to false
      */
     public LocalVariableTable getLocalVariableTable(boolean add) {
-        LocalVariableTable attr = (LocalVariableTable) getAttribute
-            (Constants.ATTR_LOCALS);
-        if (!add || (attr != null))
+        LocalVariableTable attr = (LocalVariableTable) getAttribute(Constants.ATTR_LOCALS);
+        if (!add || (attr != null)) {
             return attr;
+        }
         return (LocalVariableTable) addAttribute(Constants.ATTR_LOCALS);
     }
 
@@ -1923,11 +1946,11 @@ public class Code extends Attribute {
      * and the <code>add</code> param is set to false
      */
     public LocalVariableTypeTable getLocalVariableTypeTable(boolean add) {
-        LocalVariableTypeTable attr = (LocalVariableTypeTable) getAttribute
-            (Constants.ATTR_LOCAL_TYPES);
-        if (!add || (attr != null))
+        LocalVariableTypeTable attr = (LocalVariableTypeTable) getAttribute(Constants.ATTR_LOCAL_TYPES);
+        if (!add || (attr != null)) {
             return attr;
-        return (LocalVariableTypeTable)addAttribute(Constants.ATTR_LOCAL_TYPES);
+        }
+        return (LocalVariableTypeTable) addAttribute(Constants.ATTR_LOCAL_TYPES);
     }
 
     /**
@@ -1943,7 +1966,6 @@ public class Code extends Attribute {
     //////////////////
     // I/O operations
     //////////////////
-
     void read(Attribute attr) {
         Code orig = (Code) attr;
         _maxStack = orig.getMaxStack();
@@ -1963,12 +1985,13 @@ public class Code extends Attribute {
         Instruction ins;
         Instruction origIns;
         for (CodeEntry entry = orig._head.next; entry != orig._tail;
-            entry = entry.next) {
+                entry = entry.next) {
             origIns = (Instruction) entry;
             ins = createInstruction(origIns.getOpcode());
             _ci.addInternal(ins);
-            if (!(ins instanceof ConstantInstruction))
+            if (!(ins instanceof ConstantInstruction)) {
                 ins.read(origIns);
+            }
         }
 
         // copy exception handlers
@@ -1986,25 +2009,29 @@ public class Code extends Attribute {
 
         // setup local variable markers
         LocalVariableTable locals = getLocalVariableTable(false);
-        if (locals != null)
+        if (locals != null) {
             locals.updateTargets();
+        }
 
         // setup local variable markers
         LocalVariableTypeTable localTypes = getLocalVariableTypeTable(false);
-        if (localTypes != null)
+        if (localTypes != null) {
             localTypes.updateTargets();
+        }
 
         // setup line number markers
         LineNumberTable lines = getLineNumberTable(false);
-        if (lines != null)
+        if (lines != null) {
             lines.updateTargets();
+        }
 
         // now copy constant instruction values
         CodeEntry copy = _head.next;
         for (CodeEntry entry = orig._head.next; entry != orig._tail;
-            entry = entry.next, copy = copy.next) {
-            if (entry instanceof ConstantInstruction)
+                entry = entry.next, copy = copy.next) {
+            if (entry instanceof ConstantInstruction) {
                 ((ConstantInstruction) copy).read((Instruction) entry);
+            }
         }
         beforeFirst();
     }
@@ -2027,18 +2054,21 @@ public class Code extends Attribute {
 
         // setup local variable markers
         LocalVariableTable locals = getLocalVariableTable(false);
-        if (locals != null)
+        if (locals != null) {
             locals.updateTargets();
+        }
 
         // setup local variable markers
         LocalVariableTypeTable localTypes = getLocalVariableTypeTable(false);
-        if (localTypes != null)
+        if (localTypes != null) {
             localTypes.updateTargets();
+        }
 
         // setup line number markers
         LineNumberTable lines = getLineNumberTable(false);
-        if (lines != null)
+        if (lines != null) {
             lines.updateTargets();
+        }
     }
 
     void write(DataOutput out, int length) throws IOException {
@@ -2050,8 +2080,9 @@ public class Code extends Attribute {
         out.write(code);
 
         out.writeShort(_handlers.size());
-        for (Iterator itr = _handlers.iterator(); itr.hasNext();)
+        for (Iterator itr = _handlers.iterator(); itr.hasNext();) {
             ((ExceptionHandler) itr.next()).write(out);
+        }
         writeAttributes(out);
     }
 
@@ -2074,30 +2105,35 @@ public class Code extends Attribute {
         beforeFirst();
 
         // sanity check
-        if (!_byteIndexesValid)
+        if (!_byteIndexesValid) {
             throw new IllegalStateException();
+        }
     }
 
     /**
      * Ensures that all the opcode targets are set up correctly.
      */
     private void updateInstructionPointers() {
-        for (CodeEntry entry = _head.next; entry != _tail; entry = entry.next)
-            if (entry instanceof InstructionPtr)
+        for (CodeEntry entry = _head.next; entry != _tail; entry = entry.next) {
+            if (entry instanceof InstructionPtr) {
                 ((InstructionPtr) entry).updateTargets();
+            }
+        }
     }
 
     /**
      * Returns the byteIndex of the given instruction.
      */
     int getByteIndex(Instruction ins) {
-        if (_byteIndexesValid && ins.byteIndex != -1)
+        if (_byteIndexesValid && ins.byteIndex != -1) {
             return ins.byteIndex;
+        }
 
         int byteIndex = 0;
         for (CodeEntry entry = _head.next; entry != _tail; entry = entry.next) {
-            if (entry == ins)
+            if (entry == ins) {
                 return byteIndex;
+            }
             byteIndex += ((Instruction) entry).getLength();
         }
         throw new IllegalArgumentException("ins.owner != this");
@@ -2114,20 +2150,23 @@ public class Code extends Attribute {
      * Returns the instruction in this code block found at the given byte index.
      */
     Instruction getInstruction(int byteIndex) {
-        if (byteIndex < 0)
+        if (byteIndex < 0) {
             return null;
+        }
 
         int curIndex = 0;
         for (CodeEntry entry = _head.next; entry != _tail; entry = entry.next) {
-            if (byteIndex == curIndex)
+            if (byteIndex == curIndex) {
                 return (Instruction) entry;
+            }
             curIndex += ((Instruction) entry).getLength();
         }
 
         // some instruction ptrs are actually to a "next" instruction, so 
         // allow one past the end
-        if (byteIndex == curIndex)
+        if (byteIndex == curIndex) {
             return null;
+        }
         throw new IllegalArgumentException(String.valueOf(byteIndex));
     }
 
@@ -2155,9 +2194,11 @@ public class Code extends Attribute {
     private int indexOf(Instruction ins) {
         int i = 0;
         for (CodeEntry entry = _head.next; entry != _tail;
-            entry = entry.next, i++)
-            if (entry == ins)
+                entry = entry.next, i++) {
+            if (entry == ins) {
                 return i;
+            }
+        }
         throw new IllegalArgumentException("ins.code != this");
     }
 
@@ -2177,7 +2218,10 @@ public class Code extends Attribute {
             writeCode(stream);
             return byteStream.toByteArray();
         } finally {
-            try { stream.close(); } catch (Exception e) {}
+            try {
+                stream.close();
+            } catch (Exception e) {
+            }
         }
     }
 
@@ -2187,12 +2231,14 @@ public class Code extends Attribute {
             _tail.prev = _head;
             _size = 0;
         } else {
-            DataInputStream stream = new DataInputStream
-                (new ByteArrayInputStream(code));
+            DataInputStream stream = new DataInputStream(new ByteArrayInputStream(code));
             try {
                 readCode(stream, code.length);
             } finally {
-                try { stream.close(); } catch (Exception e) {}
+                try {
+                    stream.close();
+                } catch (Exception e) {
+                }
             }
         }
     }
@@ -2212,235 +2258,235 @@ public class Code extends Attribute {
      */
     private Instruction createInstruction(int opcode) {
         switch (opcode) {
-        case Constants.NOP:
-        case Constants.ARRAYLENGTH:
-        case Constants.ATHROW:
-            return new Instruction(this, opcode);
-        case Constants.ACONSTNULL:
-        case Constants.ICONSTM1:
-        case Constants.ICONST0:
-        case Constants.ICONST1:
-        case Constants.ICONST2:
-        case Constants.ICONST3:
-        case Constants.ICONST4:
-        case Constants.ICONST5:
-        case Constants.LCONST0:
-        case Constants.LCONST1:
-        case Constants.FCONST0:
-        case Constants.FCONST1:
-        case Constants.FCONST2:
-        case Constants.DCONST0:
-        case Constants.DCONST1:
-        case Constants.BIPUSH:
-        case Constants.SIPUSH:
-        case Constants.LDC:
-        case Constants.LDCW:
-        case Constants.LDC2W:
-            return new ConstantInstruction(this, opcode);
-        case Constants.ILOAD:
-        case Constants.LLOAD:
-        case Constants.FLOAD:
-        case Constants.DLOAD:
-        case Constants.ALOAD:
-        case Constants.ILOAD0:
-        case Constants.ILOAD1:
-        case Constants.ILOAD2:
-        case Constants.ILOAD3:
-        case Constants.LLOAD0:
-        case Constants.LLOAD1:
-        case Constants.LLOAD2:
-        case Constants.LLOAD3:
-        case Constants.FLOAD0:
-        case Constants.FLOAD1:
-        case Constants.FLOAD2:
-        case Constants.FLOAD3:
-        case Constants.DLOAD0:
-        case Constants.DLOAD1:
-        case Constants.DLOAD2:
-        case Constants.DLOAD3:
-        case Constants.ALOAD0:
-        case Constants.ALOAD1:
-        case Constants.ALOAD2:
-        case Constants.ALOAD3:
-            return new LoadInstruction(this, opcode);
-        case Constants.IALOAD:
-        case Constants.LALOAD:
-        case Constants.FALOAD:
-        case Constants.DALOAD:
-        case Constants.AALOAD:
-        case Constants.BALOAD:
-        case Constants.CALOAD:
-        case Constants.SALOAD:
-            return new ArrayLoadInstruction(this, opcode);
-        case Constants.ISTORE:
-        case Constants.LSTORE:
-        case Constants.FSTORE:
-        case Constants.DSTORE:
-        case Constants.ASTORE:
-        case Constants.ISTORE0:
-        case Constants.ISTORE1:
-        case Constants.ISTORE2:
-        case Constants.ISTORE3:
-        case Constants.LSTORE0:
-        case Constants.LSTORE1:
-        case Constants.LSTORE2:
-        case Constants.LSTORE3:
-        case Constants.FSTORE0:
-        case Constants.FSTORE1:
-        case Constants.FSTORE2:
-        case Constants.FSTORE3:
-        case Constants.DSTORE0:
-        case Constants.DSTORE1:
-        case Constants.DSTORE2:
-        case Constants.DSTORE3:
-        case Constants.ASTORE0:
-        case Constants.ASTORE1:
-        case Constants.ASTORE2:
-        case Constants.ASTORE3:
-            return new StoreInstruction(this, opcode);
-        case Constants.IASTORE:
-        case Constants.LASTORE:
-        case Constants.FASTORE:
-        case Constants.DASTORE:
-        case Constants.AASTORE:
-        case Constants.BASTORE:
-        case Constants.CASTORE:
-        case Constants.SASTORE:
-            return new ArrayStoreInstruction(this, opcode);
-        case Constants.POP:
-        case Constants.POP2:
-        case Constants.DUP:
-        case Constants.DUPX1:
-        case Constants.DUPX2:
-        case Constants.DUP2:
-        case Constants.DUP2X1:
-        case Constants.DUP2X2:
-        case Constants.SWAP:
-            return new StackInstruction(this, opcode);
-        case Constants.IADD:
-        case Constants.LADD:
-        case Constants.FADD:
-        case Constants.DADD:
-        case Constants.ISUB:
-        case Constants.LSUB:
-        case Constants.FSUB:
-        case Constants.DSUB:
-        case Constants.IMUL:
-        case Constants.LMUL:
-        case Constants.FMUL:
-        case Constants.DMUL:
-        case Constants.IDIV:
-        case Constants.LDIV:
-        case Constants.FDIV:
-        case Constants.DDIV:
-        case Constants.IREM:
-        case Constants.LREM:
-        case Constants.FREM:
-        case Constants.DREM:
-        case Constants.INEG:
-        case Constants.LNEG:
-        case Constants.FNEG:
-        case Constants.DNEG:
-        case Constants.ISHL:
-        case Constants.LSHL:
-        case Constants.ISHR:
-        case Constants.LSHR:
-        case Constants.IUSHR:
-        case Constants.LUSHR:
-        case Constants.IAND:
-        case Constants.LAND:
-        case Constants.IOR:
-        case Constants.LOR:
-        case Constants.IXOR:
-        case Constants.LXOR:
-            return new MathInstruction(this, opcode);
-        case Constants.IINC:
-            return new IIncInstruction(this);
-        case Constants.I2L:
-        case Constants.I2F:
-        case Constants.I2D:
-        case Constants.L2I:
-        case Constants.L2F:
-        case Constants.L2D:
-        case Constants.F2I:
-        case Constants.F2L:
-        case Constants.F2D:
-        case Constants.D2I:
-        case Constants.D2L:
-        case Constants.D2F:
-        case Constants.I2B:
-        case Constants.I2C:
-        case Constants.I2S:
-            return new ConvertInstruction(this, opcode);
-        case Constants.LCMP:
-        case Constants.FCMPL:
-        case Constants.FCMPG:
-        case Constants.DCMPL:
-        case Constants.DCMPG:
-            return new CmpInstruction(this, opcode);
-        case Constants.IFEQ:
-        case Constants.IFNE:
-        case Constants.IFLT:
-        case Constants.IFGE:
-        case Constants.IFGT:
-        case Constants.IFLE:
-        case Constants.IFICMPEQ:
-        case Constants.IFICMPNE:
-        case Constants.IFICMPLT:
-        case Constants.IFICMPGE:
-        case Constants.IFICMPGT:
-        case Constants.IFICMPLE:
-        case Constants.IFACMPEQ:
-        case Constants.IFACMPNE:
-        case Constants.IFNULL:
-        case Constants.IFNONNULL:
-            return new IfInstruction(this, opcode);
-        case Constants.GOTO:
-        case Constants.JSR:
-        case Constants.GOTOW:
-        case Constants.JSRW:
-            return new GotoInstruction(this, opcode);
-        case Constants.RET:
-            return new RetInstruction(this);
-        case Constants.TABLESWITCH:
-            return new TableSwitchInstruction(this);
-        case Constants.LOOKUPSWITCH:
-            return new LookupSwitchInstruction(this);
-        case Constants.IRETURN:
-        case Constants.LRETURN:
-        case Constants.FRETURN:
-        case Constants.DRETURN:
-        case Constants.ARETURN:
-        case Constants.RETURN:
-            return new ReturnInstruction(this, opcode);
-        case Constants.GETSTATIC:
-        case Constants.GETFIELD:
-            return new GetFieldInstruction(this, opcode);
-        case Constants.PUTSTATIC:
-        case Constants.PUTFIELD:
-            return new PutFieldInstruction(this, opcode);
-        case Constants.INVOKEVIRTUAL:
-        case Constants.INVOKESPECIAL:
-        case Constants.INVOKESTATIC:
-        case Constants.INVOKEINTERFACE:
-            return new MethodInstruction(this, opcode);
-        case Constants.NEW:
-        case Constants.ANEWARRAY:
-        case Constants.CHECKCAST:
-        case Constants.INSTANCEOF:
-            return new ClassInstruction(this, opcode);
-        case Constants.NEWARRAY:
-            return new NewArrayInstruction(this);
-        case Constants.MONITORENTER:
-            return new MonitorEnterInstruction(this);
-        case Constants.MONITOREXIT:
-            return new MonitorExitInstruction(this);
-        case Constants.WIDE:
-            return new WideInstruction(this);
-        case Constants.MULTIANEWARRAY:
-            return new MultiANewArrayInstruction(this);
-        default:
-            throw new IllegalArgumentException("Illegal opcode: " + opcode);
+            case Constants.NOP:
+            case Constants.ARRAYLENGTH:
+            case Constants.ATHROW:
+                return new Instruction(this, opcode);
+            case Constants.ACONSTNULL:
+            case Constants.ICONSTM1:
+            case Constants.ICONST0:
+            case Constants.ICONST1:
+            case Constants.ICONST2:
+            case Constants.ICONST3:
+            case Constants.ICONST4:
+            case Constants.ICONST5:
+            case Constants.LCONST0:
+            case Constants.LCONST1:
+            case Constants.FCONST0:
+            case Constants.FCONST1:
+            case Constants.FCONST2:
+            case Constants.DCONST0:
+            case Constants.DCONST1:
+            case Constants.BIPUSH:
+            case Constants.SIPUSH:
+            case Constants.LDC:
+            case Constants.LDCW:
+            case Constants.LDC2W:
+                return new ConstantInstruction(this, opcode);
+            case Constants.ILOAD:
+            case Constants.LLOAD:
+            case Constants.FLOAD:
+            case Constants.DLOAD:
+            case Constants.ALOAD:
+            case Constants.ILOAD0:
+            case Constants.ILOAD1:
+            case Constants.ILOAD2:
+            case Constants.ILOAD3:
+            case Constants.LLOAD0:
+            case Constants.LLOAD1:
+            case Constants.LLOAD2:
+            case Constants.LLOAD3:
+            case Constants.FLOAD0:
+            case Constants.FLOAD1:
+            case Constants.FLOAD2:
+            case Constants.FLOAD3:
+            case Constants.DLOAD0:
+            case Constants.DLOAD1:
+            case Constants.DLOAD2:
+            case Constants.DLOAD3:
+            case Constants.ALOAD0:
+            case Constants.ALOAD1:
+            case Constants.ALOAD2:
+            case Constants.ALOAD3:
+                return new LoadInstruction(this, opcode);
+            case Constants.IALOAD:
+            case Constants.LALOAD:
+            case Constants.FALOAD:
+            case Constants.DALOAD:
+            case Constants.AALOAD:
+            case Constants.BALOAD:
+            case Constants.CALOAD:
+            case Constants.SALOAD:
+                return new ArrayLoadInstruction(this, opcode);
+            case Constants.ISTORE:
+            case Constants.LSTORE:
+            case Constants.FSTORE:
+            case Constants.DSTORE:
+            case Constants.ASTORE:
+            case Constants.ISTORE0:
+            case Constants.ISTORE1:
+            case Constants.ISTORE2:
+            case Constants.ISTORE3:
+            case Constants.LSTORE0:
+            case Constants.LSTORE1:
+            case Constants.LSTORE2:
+            case Constants.LSTORE3:
+            case Constants.FSTORE0:
+            case Constants.FSTORE1:
+            case Constants.FSTORE2:
+            case Constants.FSTORE3:
+            case Constants.DSTORE0:
+            case Constants.DSTORE1:
+            case Constants.DSTORE2:
+            case Constants.DSTORE3:
+            case Constants.ASTORE0:
+            case Constants.ASTORE1:
+            case Constants.ASTORE2:
+            case Constants.ASTORE3:
+                return new StoreInstruction(this, opcode);
+            case Constants.IASTORE:
+            case Constants.LASTORE:
+            case Constants.FASTORE:
+            case Constants.DASTORE:
+            case Constants.AASTORE:
+            case Constants.BASTORE:
+            case Constants.CASTORE:
+            case Constants.SASTORE:
+                return new ArrayStoreInstruction(this, opcode);
+            case Constants.POP:
+            case Constants.POP2:
+            case Constants.DUP:
+            case Constants.DUPX1:
+            case Constants.DUPX2:
+            case Constants.DUP2:
+            case Constants.DUP2X1:
+            case Constants.DUP2X2:
+            case Constants.SWAP:
+                return new StackInstruction(this, opcode);
+            case Constants.IADD:
+            case Constants.LADD:
+            case Constants.FADD:
+            case Constants.DADD:
+            case Constants.ISUB:
+            case Constants.LSUB:
+            case Constants.FSUB:
+            case Constants.DSUB:
+            case Constants.IMUL:
+            case Constants.LMUL:
+            case Constants.FMUL:
+            case Constants.DMUL:
+            case Constants.IDIV:
+            case Constants.LDIV:
+            case Constants.FDIV:
+            case Constants.DDIV:
+            case Constants.IREM:
+            case Constants.LREM:
+            case Constants.FREM:
+            case Constants.DREM:
+            case Constants.INEG:
+            case Constants.LNEG:
+            case Constants.FNEG:
+            case Constants.DNEG:
+            case Constants.ISHL:
+            case Constants.LSHL:
+            case Constants.ISHR:
+            case Constants.LSHR:
+            case Constants.IUSHR:
+            case Constants.LUSHR:
+            case Constants.IAND:
+            case Constants.LAND:
+            case Constants.IOR:
+            case Constants.LOR:
+            case Constants.IXOR:
+            case Constants.LXOR:
+                return new MathInstruction(this, opcode);
+            case Constants.IINC:
+                return new IIncInstruction(this);
+            case Constants.I2L:
+            case Constants.I2F:
+            case Constants.I2D:
+            case Constants.L2I:
+            case Constants.L2F:
+            case Constants.L2D:
+            case Constants.F2I:
+            case Constants.F2L:
+            case Constants.F2D:
+            case Constants.D2I:
+            case Constants.D2L:
+            case Constants.D2F:
+            case Constants.I2B:
+            case Constants.I2C:
+            case Constants.I2S:
+                return new ConvertInstruction(this, opcode);
+            case Constants.LCMP:
+            case Constants.FCMPL:
+            case Constants.FCMPG:
+            case Constants.DCMPL:
+            case Constants.DCMPG:
+                return new CmpInstruction(this, opcode);
+            case Constants.IFEQ:
+            case Constants.IFNE:
+            case Constants.IFLT:
+            case Constants.IFGE:
+            case Constants.IFGT:
+            case Constants.IFLE:
+            case Constants.IFICMPEQ:
+            case Constants.IFICMPNE:
+            case Constants.IFICMPLT:
+            case Constants.IFICMPGE:
+            case Constants.IFICMPGT:
+            case Constants.IFICMPLE:
+            case Constants.IFACMPEQ:
+            case Constants.IFACMPNE:
+            case Constants.IFNULL:
+            case Constants.IFNONNULL:
+                return new IfInstruction(this, opcode);
+            case Constants.GOTO:
+            case Constants.JSR:
+            case Constants.GOTOW:
+            case Constants.JSRW:
+                return new GotoInstruction(this, opcode);
+            case Constants.RET:
+                return new RetInstruction(this);
+            case Constants.TABLESWITCH:
+                return new TableSwitchInstruction(this);
+            case Constants.LOOKUPSWITCH:
+                return new LookupSwitchInstruction(this);
+            case Constants.IRETURN:
+            case Constants.LRETURN:
+            case Constants.FRETURN:
+            case Constants.DRETURN:
+            case Constants.ARETURN:
+            case Constants.RETURN:
+                return new ReturnInstruction(this, opcode);
+            case Constants.GETSTATIC:
+            case Constants.GETFIELD:
+                return new GetFieldInstruction(this, opcode);
+            case Constants.PUTSTATIC:
+            case Constants.PUTFIELD:
+                return new PutFieldInstruction(this, opcode);
+            case Constants.INVOKEVIRTUAL:
+            case Constants.INVOKESPECIAL:
+            case Constants.INVOKESTATIC:
+            case Constants.INVOKEINTERFACE:
+                return new MethodInstruction(this, opcode);
+            case Constants.NEW:
+            case Constants.ANEWARRAY:
+            case Constants.CHECKCAST:
+            case Constants.INSTANCEOF:
+                return new ClassInstruction(this, opcode);
+            case Constants.NEWARRAY:
+                return new NewArrayInstruction(this);
+            case Constants.MONITORENTER:
+                return new MonitorEnterInstruction(this);
+            case Constants.MONITOREXIT:
+                return new MonitorExitInstruction(this);
+            case Constants.WIDE:
+                return new WideInstruction(this);
+            case Constants.MULTIANEWARRAY:
+                return new MultiANewArrayInstruction(this);
+            default:
+                throw new IllegalArgumentException("Illegal opcode: " + opcode);
         }
     }
 
@@ -2459,6 +2505,7 @@ public class Code extends Attribute {
      * and notification of modification on addition.
      */
     private class CodeIterator implements ListIterator {
+
         public static final int UNSET = -99;
         private CodeEntry _bn = null; // "before next" entry
         private Instruction _last = null; // last entry returned
@@ -2478,13 +2525,15 @@ public class Code extends Attribute {
         }
 
         public Object next() {
-            if (!hasNext())
+            if (!hasNext()) {
                 throw new NoSuchElementException();
+            }
 
             _bn = _bn.next;
             _last = (Instruction) _bn;
-            if (_index != UNSET)
+            if (_index != UNSET) {
                 _index++;
+            }
             return _last;
         }
 
@@ -2493,13 +2542,15 @@ public class Code extends Attribute {
         }
 
         public Object previous() {
-            if (!hasPrevious())
+            if (!hasPrevious()) {
                 throw new NoSuchElementException();
+            }
 
             _last = (Instruction) _bn;
             _bn = _bn.prev;
-            if (_index != UNSET)
+            if (_index != UNSET) {
                 _index--;
+            }
             return _last;
         }
 
@@ -2509,10 +2560,11 @@ public class Code extends Attribute {
 
         private int initIndex() {
             if (_index == UNSET) {
-                if (_bn == _head)
+                if (_bn == _head) {
                     _index = -1;
-                else
+                } else {
                     _index = indexOf((Instruction) _bn);
+                }
             }
             return _index;
         }
@@ -2523,8 +2575,9 @@ public class Code extends Attribute {
         }
 
         private void addInternal(Object obj) {
-            if (obj == null)
+            if (obj == null) {
                 throw new NullPointerException("obj = null");
+            }
 
             Instruction ins = (Instruction) obj;
             if (_size == 0) {
@@ -2539,8 +2592,9 @@ public class Code extends Attribute {
                 next.prev = ins;
                 ins.prev = _bn;
                 ins.next = next;
-                if (_index != UNSET)
+                if (_index != UNSET) {
                     _index++;
+                }
             }
 
             _bn = ins;
@@ -2549,10 +2603,12 @@ public class Code extends Attribute {
         }
 
         public void set(Object obj) {
-            if (obj == null)
+            if (obj == null) {
                 throw new NullPointerException("obj = null");
-            if (_last == null)
+            }
+            if (_last == null) {
                 throw new IllegalStateException();
+            }
 
             Instruction ins = (Instruction) obj;
             ins.prev = _last.prev;
@@ -2562,18 +2618,21 @@ public class Code extends Attribute {
 
             replaceTarget(_last, ins);
             _last.invalidate();
-            if (_bn == _last)
+            if (_bn == _last) {
                 _bn = ins;
+            }
             _last = ins;
             invalidateByteIndexes();
         }
 
         public void remove() {
-            if (_last == null)
+            if (_last == null) {
                 throw new IllegalStateException();
+            }
 
-            if (_bn == _last)
+            if (_bn == _last) {
                 _bn = _last.prev;
+            }
             _index--;
             _last.prev.next = _last.next;
             _last.next.prev = _last.prev;
@@ -2581,10 +2640,11 @@ public class Code extends Attribute {
 
             Instruction orig = _last;
             Instruction replace = null;
-            if (orig.next != _tail)
+            if (orig.next != _tail) {
                 replace = (Instruction) orig.next;
-            else
+            } else {
                 replace = nop();
+            }
             replaceTarget(orig, replace);
             orig.invalidate();
             _last = null;
@@ -2593,30 +2653,53 @@ public class Code extends Attribute {
 
         private void replaceTarget(Instruction orig, Instruction replace) {
             for (CodeEntry entry = _head.next; entry != _tail;
-                entry = entry.next) {
-                if (entry instanceof InstructionPtr)
+                    entry = entry.next) {
+                if (entry instanceof InstructionPtr) {
                     ((InstructionPtr) entry).replaceTarget(orig, replace);
+                }
             }
 
             // update the ExceptionHandler pointers
             ExceptionHandler[] handlers = getExceptionHandlers();
-            for (int i = 0; i < handlers.length; i++)
+            for (int i = 0; i < handlers.length; i++) {
                 handlers[i].replaceTarget(orig, replace);
+            }
 
             // update LineNumber pointers
             LineNumberTable lineNumbers = getLineNumberTable(false);
-            if (lineNumbers != null)
+            if (lineNumbers != null) {
                 lineNumbers.replaceTarget(orig, replace);
+            }
 
             // update LocalVariable pointers
             LocalVariableTable variables = getLocalVariableTable(false);
-            if (variables != null)
+            if (variables != null) {
                 variables.replaceTarget(orig, replace);
+            }
 
             // update LocalVariableType pointers
             LocalVariableTypeTable types = getLocalVariableTypeTable(false);
-            if (types != null)
+            if (types != null) {
                 types.replaceTarget(orig, replace);
+            }
         }
+    }
+
+    @Override
+    public String toString() {
+        String text = "";
+        for (Instruction i : getInstructions()) {
+            if (i.getLineNumber() != null) {
+                text += "<b>" + (i.getLineNumber().getLine() + ": " + i.getName()) + " </b>";
+                if (i instanceof ConstantInstruction) {
+                    text += "<font color=\"blue\">" + ("[" + ((ConstantInstruction) i).getValue() + "]") + "</font>";
+                } else if (i instanceof FieldInstruction) {
+                    FieldInstruction fi = (FieldInstruction)i;
+                    text += "<font color=\"red\">" + ("[" + fi.getFieldDeclarerName() + "." + fi.getFieldName() + "]") + "</font>";
+                }
+            }
+            text += "<br>";
+        }
+        return text;
     }
 }
