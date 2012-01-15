@@ -11,7 +11,6 @@
 package net.aurora.ui;
 
 import net.aurora.bot.Bot;
-import net.aurora.sorcery.ui.SorceryUI;
 
 import javax.swing.*;
 import java.applet.Applet;
