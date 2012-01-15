@@ -11,9 +11,12 @@
 package net.aurora.ui;
 
 import net.aurora.bot.Bot;
+import net.aurora.sorcery.ui.SorceryUI;
 
 import javax.swing.*;
 import java.applet.Applet;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * @author Devel
@@ -103,8 +106,23 @@ public class UI extends javax.swing.JFrame {
 
         menuBar.add(editMenu);
 
+        toolsMenu = new JMenu("Tools");
+
+        sorceryItem = new JMenuItem("Sorcery Explorer");
+        sorceryItem.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                new SorceryUI().setVisible(true);
+            }
+
+        });
+        toolsMenu.add(sorceryItem);
+
+        menuBar.add(toolsMenu);
+
         setJMenuBar(menuBar);
 
+        Bot.getSingleton().init();
         Applet applet = Bot.getSingleton().getApplet();
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -133,6 +151,8 @@ public class UI extends javax.swing.JFrame {
     private javax.swing.JMenuItem closeMenuItem;
     private javax.swing.JList debugList;
     private javax.swing.JScrollPane debugScrollPane;
+    private JMenu toolsMenu;
+    private JMenuItem sorceryItem;
     private javax.swing.JMenu editMenu;
     private javax.swing.JPopupMenu.Separator editMenuSeperator;
     private javax.swing.JMenu fileMenu;

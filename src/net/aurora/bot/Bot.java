@@ -1,8 +1,5 @@
 package net.aurora.bot;
 
-import net.aurora.Application;
-import net.aurora.external.opengl.GLObject;
-import net.aurora.external.opengl.OpenGL;
 import net.aurora.input.InputManager;
 import net.aurora.input.listeners.ComponentListener;
 import net.aurora.input.listeners.MouseAction;
@@ -12,6 +9,7 @@ import net.aurora.loader.AppletLoaderContext;
 import net.aurora.loader.page.Frame;
 import net.aurora.loader.page.Server;
 import net.aurora.sorcery.ClassContainer;
+import net.aurora.sorcery.Sorcery;
 
 import java.applet.Applet;
 import java.awt.*;
@@ -23,21 +21,21 @@ import java.util.HashMap;
  *         Time: 4:48
  */
 public class Bot {
-    private static Bot _singleton;
-    private ClassContainer rsClasses = new ClassContainer();
+    private static volatile Bot _singleton;
 
     private HashMap<String, ComponentListener> listenerHashMap = new HashMap<String, ComponentListener>();
     private InputManager manager = InputManager.create(this, true);
+    private Sorcery sorcery = new Sorcery();
 
     //Applet loader stuff
     private AppletLoader loader;
     private AppletLoaderContext context;
     private Applet applet;
 
-    public Bot() {
+    public void init() {
         this.context = AppletLoaderContext.create(new Frame(Server.Language.ENGLISH).getServer());
         this.loader = new AppletLoader(this.context);
-        this.applet = loader.getApplet();
+        this.applet = this.loader.getApplet();
     }
 
     /**
@@ -72,16 +70,21 @@ public class Bot {
         listenerHashMap.get("MouseMovement").attach(component);
     }
 
-
-    public ClassContainer getRsClasses() {
-        return rsClasses;
+    /**
+     * Get the "Sorcery" util package for client exploration.
+     * @return
+     */
+    public Sorcery getSorcery() {
+        return this.sorcery;
     }
-
     /**
      * Ensures only one instance of Bot is active.
      */
-    public static Bot getSingleton() {
-        if (_singleton == null) _singleton = new Bot();
+    public static synchronized Bot getSingleton() {
+        if (_singleton == null) {
+            _singleton = new Bot();
+        }
         return _singleton;
+
     }
 }

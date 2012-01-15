@@ -20,7 +20,7 @@ public class Frame {
 
     public void load() {
         try {
-            URL url = new URL("http://www.runescape.com/" + language.toString() + "game.ws?j=1");
+            URL url = new URL("http://www.runescape.com/g=runescape/" + language.toString() + "game.ws?j=1");
             BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
 
             String HTML = "";

@@ -3,6 +3,9 @@ package net.aurora.sorcery;
 import serp.bytecode.BCClass;
 import serp.bytecode.Project;
 
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -11,11 +14,27 @@ import java.util.ArrayList;
  *         Time: 21:13
  */
 public class ClassContainer {
-    private ArrayList<BCClass> classes = new ArrayList<BCClass>();
-    private Project project = new Project("runescape");
+    private Project project = new Project("client");
 
-    public void defineClass(String name, ClassLoader classLoader) {
-        project.loadClass(name, classLoader);
-        System.out.println("Loaded " + name + " from " + classLoader.hashCode());
+    public void defineClass(byte[] bytes) {
+        project.loadClass(new ByteArrayInputStream(bytes));
     }
+
+    /**
+     * Get a class by its name
+     * @param name the name of the class
+     * @return the class
+     */
+    public BCClass getClassByName(String name) {
+        return this.project.loadClass(name);
+    }
+
+    /**
+     * Get all classes defined in the project.
+     * @return all classes
+     */
+    public BCClass[] getClasses() {
+        return this.project.getClasses();
+    }
+
 }
