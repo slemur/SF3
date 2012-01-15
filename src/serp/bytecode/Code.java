@@ -2696,9 +2696,13 @@ public class Code extends Attribute {
                 } else if (i instanceof FieldInstruction) {
                     FieldInstruction fi = (FieldInstruction)i;
                     text += "<font color=\"red\">" + ("[" + fi.getFieldDeclarerName() + "." + fi.getFieldName() + "]") + "</font>";
+                } else if (i instanceof LocalVariableInstruction) {
+                    LocalVariableInstruction s = (LocalVariableInstruction)i;
+                    text += "<font color=\"purple\"> " + ("[sptr: " + s.getLocal() + "]") + "</font>";
                 }
+                text += "<br>";
             }
-            text += "<br>";
+
         }
         return text;
     }
