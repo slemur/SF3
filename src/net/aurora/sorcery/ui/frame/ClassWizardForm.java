@@ -16,6 +16,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import net.aurora.sorcery.Sorcery;
 import net.aurora.sorcery.bytecode.viewer.ClassFilter;
+import net.aurora.sorcery.ui.SorceryUI;
 import net.aurora.sorcery.ui.panel.ClassViewPanel;
 import serp.bytecode.BCClass;
 
@@ -126,7 +127,8 @@ public class ClassWizardForm extends javax.swing.JInternalFrame {
         this.classes = Sorcery.getSorcery().getClassContainer().getClasses();
         this.classTable.setModel(myClassTableModel);
         
-        setVisible(true);
+        this.setVisible(true);
+        SorceryUI.desktopPane.setSelectedFrame(this);
     }
 
     /** This method is called from within the constructor to

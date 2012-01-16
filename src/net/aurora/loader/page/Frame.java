@@ -27,7 +27,6 @@ public class Frame {
             while((HTML = reader.readLine()) != null) {
                 if(HTML.contains("<iframe id=\"game\"")) {
                     String serverURL = HTML.substring(HTML.indexOf("src=\"") + 5, HTML.indexOf("\" f"));
-                    System.out.println("Server: " + serverURL);
                     this.server = new Server(serverURL, this.language);
                 }
             }

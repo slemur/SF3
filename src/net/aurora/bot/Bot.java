@@ -13,7 +13,12 @@ import net.aurora.sorcery.Sorcery;
 
 import java.applet.Applet;
 import java.awt.*;
+import java.lang.reflect.Field;
 import java.util.HashMap;
+import javax.swing.JOptionPane;
+import net.aurora.sorcery.reflection.FieldQuery;
+import net.aurora.sorcery.reflection.FieldValue;
+import net.aurora.util.ThreadUtils;
 
 /**
  * @author Rick van Biljouw
@@ -21,12 +26,11 @@ import java.util.HashMap;
  *         Time: 4:48
  */
 public class Bot {
-    private static volatile Bot _singleton;
 
+    private static volatile Bot _singleton;
     private HashMap<String, ComponentListener> listenerHashMap = new HashMap<String, ComponentListener>();
     private InputManager manager = InputManager.create(this, true);
     private Sorcery sorcery = new Sorcery();
-
     //Applet loader stuff
     private AppletLoader loader;
     private AppletLoaderContext context;
@@ -36,6 +40,27 @@ public class Bot {
         this.context = AppletLoaderContext.create(new Frame(Server.Language.ENGLISH).getServer());
         this.loader = new AppletLoader(this.context);
         this.applet = this.loader.getApplet();
+
+        new Thread() {
+
+            public void run() {
+                ThreadUtils.sleep(this, 10000);
+                String aVal = JOptionPane.showInputDialog("search for :");
+                while (true) {
+                    if (aVal != null) {
+                        FieldQuery query = new FieldQuery(aVal);
+                        query.execute(true);
+                        HashMap<Field, FieldValue> resultSet = query.getResultSet();
+                        for (Field key : resultSet.keySet()) {
+                            System.out.println("Found " + aVal + " at " + key.getDeclaringClass().getSimpleName() + "." + key.getName() + "" + resultSet.get(key).getIndexesAsStr());
+                        }
+                        //System.out.println("this is a derp");
+                        resultSet.clear();
+                    }
+                    ThreadUtils.sleep(this, 1000);
+                }
+            }
+        }.start();
     }
 
     /**
@@ -77,6 +102,7 @@ public class Bot {
     public Sorcery getSorcery() {
         return this.sorcery;
     }
+
     /**
      * Ensures only one instance of Bot is active.
      */

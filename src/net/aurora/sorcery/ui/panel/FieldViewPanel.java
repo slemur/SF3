@@ -19,7 +19,7 @@ import net.aurora.sorcery.Sorcery;
 import net.aurora.sorcery.bytecode.viewer.FieldFilter;
 import net.aurora.sorcery.ui.SorceryUI;
 import net.aurora.sorcery.ui.frame.ClassViewerForm;
-import net.aurora.sorcery.ui.frame.FieldViewerForm;
+import net.aurora.sorcery.ui.frame.FieldExplorerForm;
 import serp.bytecode.BCField;
 
 /**
@@ -285,7 +285,7 @@ private void expandBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
         Field field = clazz.getDeclaredField(this.fields[this.fieldTable.getSelectedRow()].getName());
         if (field != null) {
             field.setAccessible(true);
-            SorceryUI.desktopPane.add(new FieldViewerForm(field, null));
+            SorceryUI.desktopPane.add(new FieldExplorerForm(field));
         }
     } catch (Exception ex) {
         Logger.getLogger(FieldViewPanel.class.getName()).log(Level.SEVERE, null, ex);

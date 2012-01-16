@@ -113,7 +113,7 @@ public class AppletLoaderContext implements AppletStub, AppletContext, Enumerati
     }
 
     public void showStatus(String status) {
-        System.out.println(status);
+
     }
 
     public void setStream(String key, InputStream stream) throws IOException {
@@ -149,7 +149,6 @@ public class AppletLoaderContext implements AppletStub, AppletContext, Enumerati
             for (String key : parameters.keySet()) {
                 ctx.putParameter(key, parameters.get(key));
             }
-            System.out.println(parameters.size());
             return ctx;
         } catch (MalformedURLException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.

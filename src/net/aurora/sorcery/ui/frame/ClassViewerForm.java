@@ -10,6 +10,7 @@
  */
 package net.aurora.sorcery.ui.frame;
 
+import net.aurora.sorcery.ui.SorceryUI;
 import net.aurora.sorcery.ui.panel.ClassViewPanel;
 import net.aurora.sorcery.ui.panel.FieldViewPanel;
 import serp.bytecode.BCClass;
@@ -30,7 +31,10 @@ public class ClassViewerForm extends javax.swing.JInternalFrame {
         this.setTitle(this.getTitle() + " - Viewing: " + containedClass.getName());
         this.classViewTabbedPane.addTab("Class overview", new ClassViewPanel(this));
         this.classViewTabbedPane.addTab("Fields", new FieldViewPanel(this));
-        setVisible(true);
+       
+        this.setVisible(true);
+        
+        SorceryUI.desktopPane.setSelectedFrame(this);
     }
 
     public BCClass getContainedClass() {
