@@ -8,6 +8,7 @@ import net.aurora.loader.AppletLoader;
 import net.aurora.loader.AppletLoaderContext;
 import net.aurora.loader.page.Frame;
 import net.aurora.loader.page.Server;
+import net.aurora.rs.NodePrototype;
 import net.aurora.sorcery.ClassContainer;
 import net.aurora.sorcery.Sorcery;
 
@@ -19,6 +20,7 @@ import javax.swing.JOptionPane;
 import net.aurora.sorcery.reflection.FieldQuery;
 import net.aurora.sorcery.reflection.FieldValue;
 import net.aurora.util.ThreadUtils;
+import serp.framework.prototype.PrototypeMatcher;
 
 /**
  * @author Rick van Biljouw
@@ -40,27 +42,6 @@ public class Bot {
         this.context = AppletLoaderContext.create(new Frame(Server.Language.ENGLISH).getServer());
         this.loader = new AppletLoader(this.context);
         this.applet = this.loader.getApplet();
-
-        new Thread() {
-
-            public void run() {
-                ThreadUtils.sleep(this, 10000);
-                String aVal = JOptionPane.showInputDialog("search for :");
-                while (true) {
-                    if (aVal != null) {
-                        FieldQuery query = new FieldQuery(aVal);
-                        query.execute(true);
-                        HashMap<Field, FieldValue> resultSet = query.getResultSet();
-                        for (Field key : resultSet.keySet()) {
-                            System.out.println("Found " + aVal + " at " + key.getDeclaringClass().getSimpleName() + "." + key.getName() + "" + resultSet.get(key).getIndexesAsStr());
-                        }
-                        //System.out.println("this is a derp");
-                        resultSet.clear();
-                    }
-                    ThreadUtils.sleep(this, 1000);
-                }
-            }
-        }.start();
     }
 
     /**

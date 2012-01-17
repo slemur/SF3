@@ -9,4 +9,5 @@ class CodeEntry {
     CodeEntry next = null;
     CodeEntry prev = null;
     int byteIndex = -1;
+    int length = 1;
 }

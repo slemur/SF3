@@ -3,7 +3,6 @@ package serp.bytecode;
 import java.io.*;
 import java.util.*;
 
-import java.util.concurrent.ConcurrentHashMap;
 import serp.bytecode.lowlevel.*;
 import serp.bytecode.visitor.*;
 import serp.util.*;
@@ -27,7 +26,7 @@ import serp.util.*;
  */
 public class Project implements VisitAcceptor {
     private final String _name;
-    private final ConcurrentHashMap<String, BCClass> _cache = new ConcurrentHashMap<String, BCClass>();
+    private final HashMap _cache = new HashMap();
     private final NameCache _names = new NameCache();
 
     /**

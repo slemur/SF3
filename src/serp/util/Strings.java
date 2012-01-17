@@ -161,7 +161,7 @@ public class Strings {
         try {
             return Class.forName(str, resolve, loader);
         } catch (Throwable t) {
-            throw new IllegalArgumentException(t.toString());
+            throw new IllegalArgumentException(t);
         }
     }
 

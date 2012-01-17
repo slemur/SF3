@@ -1844,9 +1844,4 @@ public class BCClass extends Annotated implements VisitAcceptor {
         if ((_project != null) && (oldName != null))
             _project.renameClass(oldName, newName, this);
     }
-
-    @Override
-    public String toString() {
-        return this.getName();
-    }
 }

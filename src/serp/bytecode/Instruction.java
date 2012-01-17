@@ -93,7 +93,7 @@ public class Instruction extends CodeEntry implements BCEntity, VisitAcceptor {
      * For many opcodes this method relies on an up-to-date byte index.
      */
     int getLength() {
-        return 1;
+        return length;
     }
 
     /**

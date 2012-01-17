@@ -196,6 +196,14 @@ public class BCMethod extends BCMember implements VisitAcceptor {
         return params;
     }
 
+    public String getParamTypesAsString() {
+        String data = "";
+        for(String param : getParamNames()) {
+            data += (param + " ");
+        }
+        return data;
+    }
+
     /**
      * Return the {@link Class} objects for all the parameter types for this
      * method.

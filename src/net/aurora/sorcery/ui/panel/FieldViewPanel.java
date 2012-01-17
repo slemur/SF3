@@ -29,8 +29,6 @@ import serp.bytecode.BCField;
 public class FieldViewPanel extends javax.swing.JPanel {
 
     private BCField[] fields;
-    private long lastClickTime = 0;
-    private int lastClickRow = 0;
     private ClassViewerForm parent;
 
     /** Creates new form FieldViewPanel */

@@ -1,12 +1,11 @@
 package net.aurora.sorcery;
 
+import net.aurora.rs.JavaRendererPlanePrototype;
 import serp.bytecode.BCClass;
 import serp.bytecode.Project;
+import serp.framework.prototype.PrototypeMatcher;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * @author Rick van Biljouw
@@ -15,13 +14,15 @@ import java.util.ArrayList;
  */
 public class ClassContainer {
     private Project project = new Project("client");
+    private PrototypeMatcher matcher = new PrototypeMatcher(new JavaRendererPlanePrototype());
 
     /**
      * Called by ClassLoader.class
      * @param bytes the bytes of the class.
      */
     public void defineClass(byte[] bytes) {
-        project.loadClass(new ByteArrayInputStream(bytes));
+        BCClass clazz = project.loadClass(new ByteArrayInputStream(bytes));
+        matcher.match(clazz);
     }
 
     /**
